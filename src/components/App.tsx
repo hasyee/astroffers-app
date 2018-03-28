@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, DrawerLayoutAndroid, ToolbarAndroid } from 'react-native';
+import { View, DrawerLayoutAndroid, ToolbarAndroid, StatusBar } from 'react-native';
 
 export default class extends React.PureComponent {
   drawer: DrawerLayoutAndroid;
@@ -24,6 +24,7 @@ export default class extends React.PureComponent {
         renderNavigationView={this.renderDrawer}
         ref={drawer => (this.drawer = drawer)}
       >
+        <StatusBar backgroundColor="#004376" barStyle="light-content" />
         <View style={{ flex: 1, marginTop: 0, backgroundColor: '#f8f8f8' }}>
           <ToolbarAndroid
             navIcon={{ uri: 'ic_action_menu' }}
