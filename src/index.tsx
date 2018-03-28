@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Provider } from 'react-redux';
 import { createStore } from './store';
 import App from './components/App';
-import 'babel-polyfill';
+
 
 export default class extends React.PureComponent {
   state = {

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { View, Text, Switch, Picker, ScrollView, FlatList } from 'react-native';
-import { TextButton, RaisedTextButton } from 'react-native-material-buttons';
-import { BirghtnessType } from 'astroffers-core';
+import Button from './Button';
+import { BirghtnessType, objectTypes, constellations } from 'astroffers-core';
 import DatePicker from './DatePicker';
 import TextInput from './TextInput';
 import { Filter as IFilter } from '../types';
@@ -15,7 +15,7 @@ import {
   filterObjects
 } from '../actions';
 import { getFilter } from '../selectors';
-//import MultiSelectDialog from './MultiSelectDialog';
+import MultiSelectDialog from './MultiSelectDialog';
 //import MapDialog from './MapDialog';
 
 /* const data = Array.from({ length: 50 }).map((_, i) => ({
@@ -65,6 +65,8 @@ export default connect(state => ({ filter: getFilter(state) }), {
     handleLocationDialogClose = () => this.setState({ isOpenLocationDialog: false });
     handleConstellationDialogOpen = () => this.setState({ isOpenConstellationFilterDialog: true });
     handleConstellationDialogClose = () => this.setState({ isOpenConstellationFilterDialog: false });
+    handleTypeFilterDailogOpen = () => this.setState({ isOpenTypeFilterDialog: true });
+    handleTypeFilterDailogClose = () => this.setState({ isOpenTypeFilterDialog: false });
     handleDateChange = date => this.props.changeFilter('date', date);
     handleSetToday = () => this.props.changeFilter('date', Date.now());
     handleChange = (prop: string, range?: Range) => text => {
@@ -87,25 +89,45 @@ export default connect(state => ({ filter: getFilter(state) }), {
           moonless,
           brightnessFilter,
           magnitude,
-          surfaceBrightness
+          surfaceBrightness,
+          types,
+          constellations: constellationFilter
         },
         filterObjects,
+        toggleSetFilter,
+        changeAllTypeFilter,
+        changeAllConstellationFilter,
         resetFilter
       } = this.props;
-      const { isOpenLocationDialog, isOpenConstellationFilterDialog } = this.state;
+      const { isOpenLocationDialog, isOpenConstellationFilterDialog, isOpenTypeFilterDialog } = this.state;
       return (
         <View style={{ flex: 1 }}>
-          {/* <MapDialog show={isOpenLocationDialog} onClose={this.handleLocationDialogClose} />
-        <MultiSelectDialog
-          show={isOpenConstellationFilterDialog}
-          onClose={this.handleConstellationDialogClose}
-          data={data}
-        /> */}
+          {/* <MapDialog show={isOpenLocationDialog} onClose={this.handleLocationDialogClose} /> */}
+          <MultiSelectDialog
+            show={isOpenConstellationFilterDialog}
+            onClose={this.handleConstellationDialogClose}
+            data={Object.keys(constellations).map(value => ({
+              value,
+              label: constellations[value],
+              checked: constellationFilter[value]
+            }))}
+            onSelect={key => toggleSetFilter('constellations', key)}
+            onSelectAll={() => changeAllConstellationFilter(true)}
+            onSelectNone={() => changeAllConstellationFilter(false)}
+          />
+          <MultiSelectDialog
+            show={isOpenTypeFilterDialog}
+            onClose={this.handleTypeFilterDailogClose}
+            data={Object.keys(objectTypes).map(value => ({ value, label: objectTypes[value], checked: types[value] }))}
+            onSelect={key => toggleSetFilter('types', key)}
+            onSelectAll={() => changeAllTypeFilter(true)}
+            onSelectNone={() => changeAllTypeFilter(false)}
+          />
           <ScrollView style={{ padding: 20 }}>
             <DatePicker value={date} onChange={this.handleDateChange} />
             <View style={{ marginBottom: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
-              <TextButton title="SET TODAY" onPress={this.handleSetToday} />
-              <TextButton title="SELECT LOCATION" onPress={this.handleLocationDialogOpen} />
+              <Button title="SET TODAY" onPress={this.handleSetToday} />
+              <Button title="SELECT LOCATION" onPress={this.handleLocationDialogOpen} />
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <TextInput
@@ -193,13 +215,13 @@ export default connect(state => ({ filter: getFilter(state) }), {
               </View>
             </View>
             <View style={{ marginBottom: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
-              <TextButton title="FILTER CONS" onPress={this.handleConstellationDialogOpen} />
-              <TextButton title="FILTER TYPES" onPress={this.handleLocationDialogOpen} />
+              <Button title="FILTER CONS" onPress={this.handleConstellationDialogOpen} />
+              <Button title="FILTER TYPES" onPress={this.handleTypeFilterDailogOpen} />
             </View>
           </ScrollView>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 20 }}>
-            <TextButton title="RESET" />
-            <RaisedTextButton title="FILTER" color="#01579b" titleColor="white" />
+            <Button title="RESET" />
+            <Button title="FILTER" color="#01579b" raised />
           </View>
         </View>
       );
