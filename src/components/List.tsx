@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { FlatList, View, Text, TouchableNativeFeedback, StyleSheet, Picker } from 'react-native';
+import { FlatList, View, Text, TouchableNativeFeedback, StyleSheet, Picker, TextInput } from 'react-native';
 import { NgcInfo, resolveTypes, resolveConstellation } from 'astroffers-core';
 import { ListItemProp } from '../types';
 import { getList, isFiltering, getSortBy } from '../selectors';
 import { sort } from '../actions';
 import display from '../utils/display';
+import IconButton from './IconButton';
+import LazyInput from './LazyInput';
 
 const styles = StyleSheet.create({
   propertyLabeL: {
@@ -14,6 +16,19 @@ const styles = StyleSheet.create({
   },
   propertyValue: {
     fontSize: 12
+  },
+  searchItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderColor: '#ddd'
+  },
+  searchLabeL: {
+    fontSize: 13
+  },
+  searchInput: {
+    flex: 1,
+    height: 40
   }
 });
 
@@ -81,18 +96,36 @@ export default connect(
   }),
   { sort }
 )(
-  class extends React.PureComponent<{
-    objects: NgcInfo[];
-    isFiltering: boolean;
-    sortBy: ListItemProp;
-    sort: typeof sort;
-  }> {
+  class extends React.PureComponent<
+    {
+      objects: NgcInfo[];
+      isFiltering: boolean;
+      sortBy: ListItemProp;
+      sort: typeof sort;
+    },
+    { isOpenFilter: boolean; filter: { [key in ListItemProp]?: string } }
+  > {
     private list;
+
+    state = {
+      isOpenFilter: false,
+      filter: {
+        [ListItemProp.NGC]: '',
+        [ListItemProp.MESSIER]: '',
+        [ListItemProp.NAME]: ''
+      }
+    };
 
     handleSort = (prop: ListItemProp) => {
       if (prop !== this.props.sortBy) {
         this.props.sort(prop);
       }
+    };
+
+    handleToggleFilter = () => this.setState({ isOpenFilter: !this.state.isOpenFilter });
+
+    handleFilterChange = (prop: ListItemProp) => value => {
+      this.setState({ filter: { ...this.state.filter, [prop]: value } });
     };
 
     componentDidUpdate(prevProps) {
@@ -102,40 +135,79 @@ export default connect(
 
     renderHeader() {
       const { sortBy } = this.props;
+      const { isOpenFilter, filter } = this.state;
       return (
         <View
           style={{
             padding: 5,
             elevation: 3,
-            backgroundColor: '#EEE',
-            flexDirection: 'row',
-            alignItems: 'center'
+            backgroundColor: '#EEE'
           }}
         >
-          <Picker
-            mode="dropdown"
-            style={{ width: '50%', height: 40 }}
-            selectedValue={sortBy}
-            onValueChange={this.handleSort}
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between'
+            }}
           >
-            <Picker.Item label="NGC" value={ListItemProp.NGC} />
-            <Picker.Item label="Messier" value={ListItemProp.MESSIER} />
-            <Picker.Item label="Name" value={ListItemProp.NAME} />
-            <Picker.Item label="Type" value={ListItemProp.TYPE} />
-            <Picker.Item label="Constellation" value={ListItemProp.CONSTELLATION} />
-            <Picker.Item label="From" value={ListItemProp.FROM} />
-            <Picker.Item label="To" value={ListItemProp.TO} />
-            <Picker.Item label="Max" value={ListItemProp.MAX} />
-            <Picker.Item label="Sum" value={ListItemProp.SUM} />
-            <Picker.Item label="Magnitude" value={ListItemProp.MAGNITUDE} />
-            <Picker.Item label="Surface birghtness" value={ListItemProp.SURFACE_BRIGHTNESS} />
-          </Picker>
+            <Picker
+              mode="dropdown"
+              style={{ width: '50%', height: 40 }}
+              selectedValue={sortBy}
+              onValueChange={this.handleSort}
+            >
+              <Picker.Item label="NGC" value={ListItemProp.NGC} />
+              <Picker.Item label="Messier" value={ListItemProp.MESSIER} />
+              <Picker.Item label="Name" value={ListItemProp.NAME} />
+              <Picker.Item label="Type" value={ListItemProp.TYPE} />
+              <Picker.Item label="Constellation" value={ListItemProp.CONSTELLATION} />
+              <Picker.Item label="From" value={ListItemProp.FROM} />
+              <Picker.Item label="To" value={ListItemProp.TO} />
+              <Picker.Item label="Max" value={ListItemProp.MAX} />
+              <Picker.Item label="Sum" value={ListItemProp.SUM} />
+              <Picker.Item label="Magnitude" value={ListItemProp.MAGNITUDE} />
+              <Picker.Item label="Surface birghtness" value={ListItemProp.SURFACE_BRIGHTNESS} />
+            </Picker>
+            <IconButton icon="ic_action_search" onPress={this.handleToggleFilter} />
+          </View>
+          {isOpenFilter && (
+            <View style={{ padding: 10 }}>
+              <View style={styles.searchItem}>
+                <Text style={styles.searchLabeL}>NGC</Text>
+                <LazyInput
+                  style={styles.searchInput}
+                  numeric
+                  value={filter[ListItemProp.NGC]}
+                  onTypeEnd={this.handleFilterChange(ListItemProp.NGC)}
+                />
+              </View>
+              <View style={styles.searchItem}>
+                <Text style={styles.searchLabeL}>Messier</Text>
+                <LazyInput
+                  style={styles.searchInput}
+                  numeric
+                  value={filter[ListItemProp.MESSIER]}
+                  onTypeEnd={this.handleFilterChange(ListItemProp.MESSIER)}
+                />
+              </View>
+              <View style={styles.searchItem}>
+                <Text style={styles.searchLabeL}>Name</Text>
+                <LazyInput
+                  style={styles.searchInput}
+                  value={filter[ListItemProp.NAME]}
+                  onTypeEnd={this.handleFilterChange(ListItemProp.NAME)}
+                />
+              </View>
+            </View>
+          )}
         </View>
       );
     }
 
     render() {
       const { sortBy, isFiltering, objects } = this.props;
+      const { filter } = this.state;
       if (isFiltering || !objects) return null;
       return (
         <View style={{ flex: 1, width: '100%' }}>
@@ -144,8 +216,8 @@ export default connect(
             style={{ flex: 1 }}
             ref={list => (this.list = list)}
             keyExtractor={({ object }) => object.ngc.toString()}
-            data={objects}
-            extraData={{ sortBy }}
+            data={objects.filter(search(filter))}
+            extraData={{ sortBy, filter }}
             renderItem={({ item: object }) => <Item object={object} />}
           />
         </View>
@@ -153,3 +225,23 @@ export default connect(
     }
   }
 );
+
+const search = (filter: { [key in ListItemProp]?: string }) => (ngcInfo: NgcInfo): boolean => {
+  console.log(filter);
+  if (filter[ListItemProp.NGC] && filter[ListItemProp.NGC] !== ngcInfo.object.ngc.toString()) return false;
+  if (filter[ListItemProp.MESSIER] && !ngcInfo.object.messier) return false;
+  if (
+    filter[ListItemProp.MESSIER] &&
+    ngcInfo.object.messier &&
+    filter[ListItemProp.MESSIER] !== ngcInfo.object.messier.toString()
+  )
+    return false;
+  if (filter[ListItemProp.NAME] && !ngcInfo.object.name) return false;
+  if (
+    filter[ListItemProp.NAME] &&
+    ngcInfo.object.name &&
+    ngcInfo.object.name.toLowerCase().search(filter[ListItemProp.NAME].toLowerCase()) === -1
+  )
+    return false;
+  return true;
+};
