@@ -3,6 +3,12 @@ import defaultState from './defaultState';
 import { objectTypes, constellations, BirghtnessType } from 'astroffers-core';
 import sorters from './utils/sorters';
 
+export const sort = (listItemProp: ListItemProp) => (state: State): State => ({
+  ...state,
+  settings: { ...state.settings, sortBy: listItemProp },
+  result: state.result ? { ...state.result, list: state.result.list.sort(sorters[listItemProp]) } : null
+});
+
 export const resetFilter = () => (state: State): State => ({ ...state, filter: defaultState.filter });
 
 export const changeFilter = (prop: string, value: number | boolean | BirghtnessType) => (state: State): State => ({

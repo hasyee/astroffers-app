@@ -84,6 +84,10 @@ export default connect(state => ({ filter: getFilter(state) }), {
     handleSubmit = () => {
       this.props.onSubmit();
       this.props.filterObjects();
+    };
+
+    componentDidMount() {
+      this.props.filterObjects();
     }
 
     render() {
