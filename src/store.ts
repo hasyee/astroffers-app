@@ -2,6 +2,7 @@ import { AsyncStorage } from 'react-native';
 import Store, { thunk } from 'repatch';
 import { State } from './types';
 import defaultState from './defaultState';
+import * as location from './utils/location';
 
 export const createStore = async (): Promise<Store<State>> => {
   const storedFilterStr = await AsyncStorage.getItem('filter');
@@ -16,7 +17,7 @@ export const createStore = async (): Promise<Store<State>> => {
     settings: { ...defaultState.settings, ...storedSettings }
   };
 
-  const store = new Store<State>(initialState).addMiddleware(thunk.withExtraArgument({}));
+  const store = new Store<State>(initialState).addMiddleware(thunk.withExtraArgument({ location }));
 
   store.subscribe(async () => {
     const filter = JSON.stringify(store.getState().filter);

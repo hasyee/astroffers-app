@@ -47,3 +47,6 @@ export const filterObjects = () => (state: State) => async (dispatch, getState, 
     isFiltering: false
   }));
 };
+
+export const fetchLocation = () => (state: State) => async (dispatch, getState, { location }) =>
+  location.fetchLocation();

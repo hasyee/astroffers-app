@@ -67,6 +67,11 @@ export default connect(state => ({ filter: getFilter(state) }), {
     handleConstellationDialogClose = () => this.setState({ isOpenConstellationFilterDialog: false });
     handleTypeFilterDailogOpen = () => this.setState({ isOpenTypeFilterDialog: true });
     handleTypeFilterDailogClose = () => this.setState({ isOpenTypeFilterDialog: false });
+    handleLocationDialogSubmit = ({ latitude, longitude }) => {
+      this.setState({ isOpenLocationDialog: false });
+      this.props.changeFilter('latitude', latitude);
+      this.props.changeFilter('longitude', longitude);
+    };
     handleDateChange = date => this.props.changeFilter('date', date);
     handleSetToday = () => this.props.changeFilter('date', Date.now());
     handleChange = (prop: string, range?: Range) => text => {
@@ -105,6 +110,7 @@ export default connect(state => ({ filter: getFilter(state) }), {
           <SelectLocationDialog
             show={isOpenLocationDialog}
             onClose={this.handleLocationDialogClose}
+            onSubmit={this.handleLocationDialogSubmit}
             latitude={latitude}
             longitude={longitude}
           />
