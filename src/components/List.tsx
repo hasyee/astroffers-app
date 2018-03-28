@@ -227,7 +227,6 @@ export default connect(
 );
 
 const search = (filter: { [key in ListItemProp]?: string }) => (ngcInfo: NgcInfo): boolean => {
-  console.log(filter);
   if (filter[ListItemProp.NGC] && filter[ListItemProp.NGC] !== ngcInfo.object.ngc.toString()) return false;
   if (filter[ListItemProp.MESSIER] && !ngcInfo.object.messier) return false;
   if (
