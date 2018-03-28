@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { View, Text, TextInput } from 'react-native';
 
-export default class extends React.PureComponent<{ label: string; inputProps: Object; containerStyle: any }> {
+export default class extends React.PureComponent<{ label?: string; inputProps?: Object; containerStyle?: any }> {
+  static defaultProps = {
+    label: '',
+    inputProps: {},
+    containerStyle: {}
+  };
+
   render() {
     const { label, inputProps, containerStyle } = this.props;
     return (
