@@ -52,6 +52,11 @@ export default connect(null, { fetchLocation })(
           navigator.geolocation.getCurrentPosition(position => this.setState(location, this.navigateMapToPosition))
         );
 
+    handleCancel = () => {
+      this.setState(this.getInitialState());
+      this.props.onClose();
+    };
+
     handleSubmit = () =>
       this.props.onSubmit({
         latitude: parseFloat(this.state.latitude.toFixed(5)),
@@ -126,7 +131,7 @@ export default connect(null, { fetchLocation })(
               <Button title="USE MY LOCATION" onPress={this.handleUseMyLocation} />
             </View>
             <View style={{ flexDirection: 'row' }}>
-              <Button title="CANCEL" onPress={onClose} />
+              <Button title="CANCEL" onPress={this.handleCancel} />
               <Button title="SUBMIT" color="#01579b" onPress={this.handleSubmit} />
             </View>
           </View>
