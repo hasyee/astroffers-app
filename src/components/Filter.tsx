@@ -18,12 +18,6 @@ import { getFilter } from '../selectors';
 import MultiSelectDialog from './MultiSelectDialog';
 import SelectLocationDialog from './SelectLocationDialog';
 
-/* const data = Array.from({ length: 50 }).map((_, i) => ({
-  value: i.toString(),
-  label: Math.random().toString(),
-  checked: Math.random() > 0.5
-})); */
-
 type Range = { min: number; max: number };
 
 const isNegZero = (value: number) => Object.is(value, -0);
