@@ -16,7 +16,7 @@ import {
 } from '../actions';
 import { getFilter } from '../selectors';
 import MultiSelectDialog from './MultiSelectDialog';
-//import MapDialog from './MapDialog';
+import SelectLocationDialog from './SelectLocationDialog';
 
 /* const data = Array.from({ length: 50 }).map((_, i) => ({
   value: i.toString(),
@@ -102,7 +102,12 @@ export default connect(state => ({ filter: getFilter(state) }), {
       const { isOpenLocationDialog, isOpenConstellationFilterDialog, isOpenTypeFilterDialog } = this.state;
       return (
         <View style={{ flex: 1 }}>
-          {/* <MapDialog show={isOpenLocationDialog} onClose={this.handleLocationDialogClose} /> */}
+          <SelectLocationDialog
+            show={isOpenLocationDialog}
+            onClose={this.handleLocationDialogClose}
+            latitude={latitude}
+            longitude={longitude}
+          />
           <MultiSelectDialog
             show={isOpenConstellationFilterDialog}
             onClose={this.handleConstellationDialogClose}
