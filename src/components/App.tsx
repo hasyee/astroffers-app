@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { View, DrawerLayoutAndroid, ToolbarAndroid, StatusBar } from 'react-native';
+import Filter from './Filter';
 
 export default class extends React.PureComponent {
   drawer: DrawerLayoutAndroid;
@@ -13,7 +14,7 @@ export default class extends React.PureComponent {
   };
 
   renderDrawer = () => {
-    return null;
+    return <Filter />;
   };
 
   render() {

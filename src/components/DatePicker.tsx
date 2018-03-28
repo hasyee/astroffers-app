@@ -1,10 +1,10 @@
 import * as React from 'react';
-import * as moment from 'moment';
+const moment = require('moment');
 import TextInput from './TextInput';
 
 import { DatePickerAndroid } from 'react-native';
 
-export default class extends React.PureComponent<{ value: number; onChange: (date: number) => void }> {
+export default class extends React.PureComponent<{ value?: number; onChange?: (date: number) => void }> {
   static defaultProps = {
     value: Date.now(),
     onChange: date => {}
