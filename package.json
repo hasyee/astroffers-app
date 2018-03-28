@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "react-native start",
+    "dev": "npm run android && npm run log",
     "android": "react-native run-android",
     "log": "react-native log-android",
     "dev-menu": "adb shell input keyevent 82"
