@@ -40,7 +40,6 @@ export const changeAllConstellationFilter = (value: boolean) => (state: State): 
 export const filterObjects = () => (state: State) => async (dispatch, getState, { api }) => {
   dispatch((state: State): State => ({ ...state, isFiltering: true }));
   const result = await api.filterObjects(getState().filter);
-  console.log(result);
   const sortBy = getState().settings.sortBy;
   dispatch((state: State): State => ({
     ...state,

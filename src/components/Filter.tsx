@@ -43,6 +43,7 @@ export default connect(state => ({ filter: getFilter(state) }), {
       toggleSetFilter: typeof toggleSetFilter;
       changeAllTypeFilter: typeof changeAllTypeFilter;
       changeAllConstellationFilter: typeof changeAllConstellationFilter;
+      onSubmit?: () => void;
     },
     {
       isOpenLocationDialog: boolean;
@@ -50,6 +51,10 @@ export default connect(state => ({ filter: getFilter(state) }), {
       isOpenConstellationFilterDialog: boolean;
     }
   > {
+    static defaultProps = {
+      onSubmit: () => {}
+    };
+
     state = {
       isOpenLocationDialog: false,
       isOpenTypeFilterDialog: false,
@@ -76,6 +81,10 @@ export default connect(state => ({ filter: getFilter(state) }), {
     };
     handleMoonlessChange = (value: boolean) => this.props.changeFilter('moonless', value);
     handleBrightnessFilterChange = (value: BirghtnessType) => this.props.changeFilter('brightnessFilter', value);
+    handleSubmit = () => {
+      this.props.onSubmit();
+      this.props.filterObjects();
+    }
 
     render() {
       const {
@@ -227,7 +236,7 @@ export default connect(state => ({ filter: getFilter(state) }), {
           </ScrollView>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 20 }}>
             <Button title="RESET" onPress={resetFilter} />
-            <Button title="FILTER" color="#01579b" raised onPress={filterObjects} />
+            <Button title="FILTER" color="#01579b" raised onPress={this.handleSubmit} />
           </View>
         </View>
       );

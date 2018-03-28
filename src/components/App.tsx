@@ -1,12 +1,17 @@
 import * as React from 'react';
 import { View, DrawerLayoutAndroid, ToolbarAndroid, StatusBar } from 'react-native';
 import Filter from './Filter';
+import Result from './Result';
 
 export default class extends React.PureComponent {
   drawer: DrawerLayoutAndroid;
 
-  toggleDrawer = () => {
+  handleOpenDrawer = () => {
     this.drawer.openDrawer();
+  };
+
+  handleCloseDrawer = () => {
+    this.drawer.closeDrawer();
   };
 
   onActionSelected = position => {
@@ -14,7 +19,7 @@ export default class extends React.PureComponent {
   };
 
   renderDrawer = () => {
-    return <Filter />;
+    return <Filter onSubmit={this.handleCloseDrawer} />;
   };
 
   render() {
@@ -34,9 +39,10 @@ export default class extends React.PureComponent {
             style={{ height: 56, backgroundColor: '#01579b', alignSelf: 'stretch', elevation: 5 }}
             title="Astroffers"
             actions={[ { title: 'Help', show: 'never' }, { title: 'About', show: 'never' } ]}
-            onIconClicked={this.toggleDrawer}
+            onIconClicked={this.handleOpenDrawer}
             onActionSelected={this.onActionSelected}
           />
+          <Result />
         </View>
       </DrawerLayoutAndroid>
     );
