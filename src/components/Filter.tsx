@@ -20,6 +20,7 @@ import SelectLocationDialog from './SelectLocationDialog';
 
 type Range = { min: number; max: number };
 
+const wait = cb => () => setTimeout(cb, 100);
 const isNegZero = (value: number) => Object.is(value, -0);
 const resolveValue = (value: number) => (Number.isFinite(value) ? (isNegZero(value) ? '-' : value.toString()) : '');
 const checkRange = (value: number, range?: Range) =>
@@ -61,11 +62,11 @@ export default connect(state => ({ filter: getFilter(state) }), {
       isOpenConstellationFilterDialog: false
     };
 
-    handleLocationDialogOpen = () => this.setState({ isOpenLocationDialog: true });
+    handleLocationDialogOpen = wait(() => this.setState({ isOpenLocationDialog: true }));
     handleLocationDialogClose = () => this.setState({ isOpenLocationDialog: false });
-    handleConstellationDialogOpen = () => this.setState({ isOpenConstellationFilterDialog: true });
+    handleConstellationDialogOpen = wait(() => this.setState({ isOpenConstellationFilterDialog: true }));
     handleConstellationDialogClose = () => this.setState({ isOpenConstellationFilterDialog: false });
-    handleTypeFilterDailogOpen = () => this.setState({ isOpenTypeFilterDialog: true });
+    handleTypeFilterDailogOpen = wait(() => this.setState({ isOpenTypeFilterDialog: true }));
     handleTypeFilterDailogClose = () => this.setState({ isOpenTypeFilterDialog: false });
     handleLocationDialogSubmit = ({ latitude, longitude }) => {
       this.setState({ isOpenLocationDialog: false });

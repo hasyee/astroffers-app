@@ -96,7 +96,8 @@ export default connect(
     };
 
     componentDidUpdate(prevProps) {
-      if (prevProps.sortBy !== this.props.sortBy) this.list.scrollToIndex({ index: 0 });
+      if (prevProps.sortBy !== this.props.sortBy && this.props.objects.length > 0)
+        this.list.scrollToIndex({ index: 0 });
     }
 
     renderHeader() {
@@ -140,6 +141,7 @@ export default connect(
         <View style={{ flex: 1, width: '100%' }}>
           {this.renderHeader()}
           <FlatList
+            style={{ flex: 1 }}
             ref={list => (this.list = list)}
             keyExtractor={({ object }) => object.ngc.toString()}
             data={objects}
