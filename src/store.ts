@@ -3,6 +3,7 @@ import Store, { thunk } from 'repatch';
 import { State } from './types';
 import defaultState from './defaultState';
 import * as location from './utils/location';
+import * as api from './api';
 
 export const createStore = async (): Promise<Store<State>> => {
   const storedFilterStr = await AsyncStorage.getItem('filter');
@@ -17,7 +18,7 @@ export const createStore = async (): Promise<Store<State>> => {
     settings: { ...defaultState.settings, ...storedSettings }
   };
 
-  const store = new Store<State>(initialState).addMiddleware(thunk.withExtraArgument({ location }));
+  const store = new Store<State>(initialState).addMiddleware(thunk.withExtraArgument({ api, location }));
 
   store.subscribe(async () => {
     const filter = JSON.stringify(store.getState().filter);

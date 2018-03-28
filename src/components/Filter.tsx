@@ -29,6 +29,7 @@ const getErrorMessage = (value: number): string => !Number.isFinite(value) && 'T
 export default connect(state => ({ filter: getFilter(state) }), {
   changeFilter,
   resetFilter,
+  filterObjects,
   toggleSetFilter,
   changeAllTypeFilter,
   changeAllConstellationFilter
@@ -226,7 +227,7 @@ export default connect(state => ({ filter: getFilter(state) }), {
           </ScrollView>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 20 }}>
             <Button title="RESET" onPress={resetFilter} />
-            <Button title="FILTER" color="#01579b" raised />
+            <Button title="FILTER" color="#01579b" raised onPress={filterObjects} />
           </View>
         </View>
       );
