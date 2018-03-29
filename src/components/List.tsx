@@ -90,6 +90,7 @@ class Item extends React.PureComponent<{ object: NgcInfo }> {
 
 const FILTER_COLLAPSED_HEIGHT = 50;
 const FILTER_EXPANDED_HEIGHT = 180;
+const DURATION = 100;
 
 export default connect(
   state => ({
@@ -129,9 +130,9 @@ export default connect(
 
     handleToggleFilter = () => {
       if (this.state.filterHeight['_value'] === FILTER_COLLAPSED_HEIGHT) {
-        Animated.timing(this.state.filterHeight, { toValue: FILTER_EXPANDED_HEIGHT, duration: 100 }).start();
+        Animated.timing(this.state.filterHeight, { toValue: FILTER_EXPANDED_HEIGHT, duration: DURATION }).start();
       } else {
-        Animated.timing(this.state.filterHeight, { toValue: FILTER_COLLAPSED_HEIGHT, duration: 100 }).start();
+        Animated.timing(this.state.filterHeight, { toValue: FILTER_COLLAPSED_HEIGHT, duration: DURATION }).start();
       }
     };
 
@@ -154,7 +155,7 @@ export default connect(
             paddingHorizontal: 10,
             height: filterHeight,
             elevation: 3,
-            backgroundColor: '#EEE'
+            backgroundColor: 'white'
           }}
         >
           <View

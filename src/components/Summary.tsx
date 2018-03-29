@@ -1,71 +1,58 @@
 import * as React from 'react';
 import { Animated, View, Text, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
+import { NightInfo } from 'astroffers-core';
+import { getNightInfo } from '../selectors';
+import Moon from './Moon';
 
 const { width: windowWidth } = Dimensions.get('window');
 
-const COLLAPSED_SIZE = 56;
-const EXPANDED_WIDTH = windowWidth;
+const COLLAPSED_HEIGHT = 56;
 const EXPANDED_HEIGHT = 300;
-const COLLAPSED_MARGIN = 20;
-const EXPANDED_MARGIN = 0;
-const COLLAPSED_RADIUS = COLLAPSED_SIZE / 2;
-const EXPANDED_RADIUS = 0;
-const DURATION = 200;
+const DURATION = 100;
 
-export default connect()(
-  class extends React.PureComponent {
+export default connect(state => ({ nightInfo: getNightInfo(state) }))(
+  class extends React.PureComponent<{ nightInfo: NightInfo }> {
     state = {
-      width: new Animated.Value(COLLAPSED_SIZE),
-      height: new Animated.Value(COLLAPSED_SIZE),
-      bottom: new Animated.Value(COLLAPSED_MARGIN),
-      right: new Animated.Value(COLLAPSED_MARGIN),
-      borderRadius: new Animated.Value(COLLAPSED_RADIUS),
-      contentOpacity: new Animated.Value(0)
+      height: new Animated.Value(COLLAPSED_HEIGHT)
     };
 
     handlePress = () => {
-      const { width, height, bottom, right, borderRadius, contentOpacity } = this.state;
-      if (height['_value'] === COLLAPSED_SIZE) {
-        Animated.parallel([
-          Animated.timing(width, { toValue: EXPANDED_WIDTH, duration: DURATION }),
-          Animated.timing(height, { toValue: EXPANDED_HEIGHT, duration: DURATION }),
-          Animated.timing(bottom, { toValue: EXPANDED_MARGIN, duration: DURATION }),
-          Animated.timing(right, { toValue: EXPANDED_MARGIN, duration: DURATION }),
-          Animated.timing(borderRadius, { toValue: EXPANDED_RADIUS, duration: DURATION }),
-          Animated.timing(contentOpacity, { toValue: 1, duration: DURATION })
-        ]).start();
+      const { height } = this.state;
+      if (height['_value'] === COLLAPSED_HEIGHT) {
+        Animated.timing(height, { toValue: EXPANDED_HEIGHT, duration: DURATION }).start();
       } else {
-        Animated.parallel([
-          Animated.timing(width, { toValue: COLLAPSED_SIZE, duration: DURATION }),
-          Animated.timing(height, { toValue: COLLAPSED_SIZE, duration: DURATION }),
-          Animated.timing(bottom, { toValue: COLLAPSED_MARGIN, duration: DURATION }),
-          Animated.timing(right, { toValue: COLLAPSED_MARGIN, duration: DURATION }),
-          Animated.timing(borderRadius, { toValue: COLLAPSED_RADIUS, duration: DURATION }),
-          Animated.timing(contentOpacity, { toValue: 0, duration: DURATION })
-        ]).start();
+        Animated.timing(height, { toValue: COLLAPSED_HEIGHT, duration: DURATION }).start();
       }
     };
 
     render() {
-      const { width, height, bottom, right, borderRadius, contentOpacity } = this.state;
+      const { nightInfo } = this.props;
+      if (!nightInfo) return null;
+      const { moonPhase } = nightInfo;
+      const { height } = this.state;
       return (
         <Animated.View
           style={{
             position: 'absolute',
-            bottom,
-            right,
+            bottom: 0,
+            left: 0,
+            right: 0,
             height,
-            width,
-            borderRadius,
-            backgroundColor: '#EEE',
-            elevation: 8
+            width: '100%',
+            backgroundColor: 'white',
+            elevation: 10
           }}
         >
           <TouchableWithoutFeedback onPress={this.handlePress}>
-            <Animated.View style={{ flex: 1, padding: 15, opacity: contentOpacity }}>
-              <Text>hellobello</Text>
-            </Animated.View>
+            <View style={{ flex: 1 }}>
+              <View style={{ padding: 8 }}>
+                <Moon phase={moonPhase} scale={0.5} />
+              </View>
+              <Animated.View style={{ flex: 1, padding: 5 }}>
+                <Text>hellobello</Text>
+              </Animated.View>
+            </View>
           </TouchableWithoutFeedback>
         </Animated.View>
       );

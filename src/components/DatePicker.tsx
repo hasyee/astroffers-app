@@ -28,7 +28,7 @@ export default class extends React.PureComponent<{ value?: number; onChange?: (d
       date: new Date(this.state.value)
     });
     if (action !== DatePickerAndroid.dismissedAction) {
-      this.setState({ value: new Date(year, month, day).getTime() });
+      this.setState({ value: new Date(year, month, day).getTime() }, () => this.props.onChange(this.state.value));
     }
   };
 
