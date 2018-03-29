@@ -1,17 +1,22 @@
 import * as React from 'react';
+import { View } from 'react-native';
 const { connect } = require('react-redux');
 import Highcharts from './HighCharts';
 import { NightInfo, Interval, Timestamp, Hour, toNextDay, toMidnight, toNoon, getIntersection } from 'astroffers-core';
 import { getNightInfo, getDate } from '../selectors';
 
-type Band = { from: Hour; to: Hour; thickness: number; color: string };
+type Band = { from: Hour; to: Hour; thickness: number; color: string; innerRadius: number };
+
+const SIZE = 65;
 
 export default connect(state => ({ nightInfo: getNightInfo(state), date: getDate(state) }))(
   class extends React.PureComponent<{ date: Timestamp; nightInfo: NightInfo }> {
     render() {
       if (!this.props.nightInfo) return null;
       return (
-        <Highcharts config={getConfig(this.props.date, this.props.nightInfo)} style={{ width: 150, height: 150 }} />
+        <View style={{ paddingTop: 5 }}>
+          <Highcharts config={getConfig(this.props.date, this.props.nightInfo)} style={{ width: SIZE, height: SIZE }} />
+        </View>
       );
     }
   }
@@ -35,7 +40,8 @@ const toBand = (interval: Interval, color: string): Band =>
         from: getHoursOfTime(interval.start),
         to: getHoursOfTime(interval.end, true),
         thickness: 50,
-        color
+        color,
+        innerRadius: 0
       };
 
 const getNightBands = (date: Timestamp, interval: Interval, color: string): Band[] => {
@@ -46,8 +52,8 @@ const getNightBands = (date: Timestamp, interval: Interval, color: string): Band
 const getConfig = (date: Timestamp, { night, moonlessNight, astroNight }: NightInfo) => ({
   chart: {
     polar: true,
-    height: 150,
-    width: 150
+    height: SIZE,
+    width: SIZE
   },
 
   credits: {
@@ -61,7 +67,7 @@ const getConfig = (date: Timestamp, { night, moonlessNight, astroNight }: NightI
   pane: {
     startAngle: 0,
     endAngle: 360,
-    size: '80%'
+    size: '100%'
   },
 
   legend: {
@@ -79,10 +85,11 @@ const getConfig = (date: Timestamp, { night, moonlessNight, astroNight }: NightI
     labels: {
       step: 1,
       padding: 1,
-      distance: 8
+      distance: 8,
+      enabled: false
     },
     plotBands: [
-      { from: 0, to: 24, thickness: 50, color: 'lightblue' },
+      { from: 0, to: 24, thickness: 50, color: 'lightblue', innerRadius: 0 },
       ...getNightBands(date, night, '#01579B'),
       ...getNightBands(date, astroNight, 'grey'),
       ...getNightBands(date, moonlessNight, 'black')

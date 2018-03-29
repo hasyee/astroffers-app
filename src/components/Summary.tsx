@@ -15,7 +15,7 @@ const DURATION = 100;
 export default connect(state => ({ nightInfo: getNightInfo(state) }))(
   class extends React.PureComponent<{ nightInfo: NightInfo }> {
     state = {
-      height: new Animated.Value(COLLAPSED_HEIGHT)
+      height: new Animated.Value(EXPANDED_HEIGHT)
     };
 
     handlePress = () => {
@@ -52,19 +52,22 @@ export default connect(state => ({ nightInfo: getNightInfo(state) }))(
                   height: COLLAPSED_HEIGHT,
                   flexDirection: 'row',
                   alignItems: 'center',
-                  justifyContent: 'space-between',
+                  justifyContent: 'center',
                   paddingHorizontal: 15
                 }}
               >
-                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ justifyContent: 'center', flex: 1 }}>
                   <Text style={{ fontSize: 20 }}>1400</Text>
                   <Text style={{ fontSize: 10 }}>total results</Text>
                 </View>
-                <Moon phase={moonPhase} scale={0.5} />
+                <View style={{ flex: 1, alignItems: 'center' }}>
+                  <Moon phase={moonPhase} scale={0.5} />
+                </View>
+                <View style={{ flex: 1, alignItems: 'center' }}>
+                  <NightChart />
+                </View>
               </View>
-              <Animated.View style={{ flex: 1, padding: 5 }}>
-                <NightChart />
-              </Animated.View>
+              <Animated.View style={{ flex: 1, padding: 5 }} />
             </View>
           </TouchableWithoutFeedback>
         </Animated.View>
