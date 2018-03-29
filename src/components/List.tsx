@@ -154,24 +154,27 @@ export default connect(
               justifyContent: 'space-between'
             }}
           >
-            <Picker
-              mode="dropdown"
-              style={{ width: '50%', height: 40 }}
-              selectedValue={sortBy}
-              onValueChange={this.handleSort}
-            >
-              <Picker.Item label="NGC" value={ListItemProp.NGC} />
-              <Picker.Item label="Messier" value={ListItemProp.MESSIER} />
-              <Picker.Item label="Name" value={ListItemProp.NAME} />
-              <Picker.Item label="Type" value={ListItemProp.TYPE} />
-              <Picker.Item label="Constellation" value={ListItemProp.CONSTELLATION} />
-              <Picker.Item label="From" value={ListItemProp.FROM} />
-              <Picker.Item label="To" value={ListItemProp.TO} />
-              <Picker.Item label="Max" value={ListItemProp.MAX} />
-              <Picker.Item label="Sum" value={ListItemProp.SUM} />
-              <Picker.Item label="Magnitude" value={ListItemProp.MAGNITUDE} />
-              <Picker.Item label="Surface birghtness" value={ListItemProp.SURFACE_BRIGHTNESS} />
-            </Picker>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{ fontSize: 16, color: 'black' }}>Sort by</Text>
+              <Picker
+                mode="dropdown"
+                style={{ width: 200, height: 40 }}
+                selectedValue={sortBy}
+                onValueChange={this.handleSort}
+              >
+                <Picker.Item label="NGC" value={ListItemProp.NGC} />
+                <Picker.Item label="Messier" value={ListItemProp.MESSIER} />
+                <Picker.Item label="Name" value={ListItemProp.NAME} />
+                <Picker.Item label="Type" value={ListItemProp.TYPE} />
+                <Picker.Item label="Constellation" value={ListItemProp.CONSTELLATION} />
+                <Picker.Item label="From" value={ListItemProp.FROM} />
+                <Picker.Item label="To" value={ListItemProp.TO} />
+                <Picker.Item label="Max" value={ListItemProp.MAX} />
+                <Picker.Item label="Sum" value={ListItemProp.SUM} />
+                <Picker.Item label="Magnitude" value={ListItemProp.MAGNITUDE} />
+                <Picker.Item label="Surface birghtness" value={ListItemProp.SURFACE_BRIGHTNESS} />
+              </Picker>
+            </View>
             <IconButton icon="ic_action_search" onPress={this.handleToggleFilter} />
           </View>
           {isOpenFilter && (
@@ -228,9 +231,7 @@ export default connect(
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
               <Text style={{ fontSize: 20, marginBottom: 20 }}>No results to show</Text>
               {moonless ? (
-                <Text style={{ color: '#444' }}>
-                  Try to turn off the 'Moonless night only' filter
-                </Text>
+                <Text style={{ color: '#444' }}>Try to turn off the 'Moonless night only' filter</Text>
               ) : null}
             </View>
           )}
