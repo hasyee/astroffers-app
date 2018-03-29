@@ -90,7 +90,7 @@ class Item extends React.PureComponent<{ object: NgcInfo }> {
 
 const FILTER_COLLAPSED_HEIGHT = 50;
 const FILTER_EXPANDED_HEIGHT = 180;
-const DURATION = 100;
+const DURATION = 200;
 
 export default connect(
   state => ({
