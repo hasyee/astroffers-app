@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { NightInfo } from 'astroffers-core';
 import { getNightInfo } from '../selectors';
 import Moon from './Moon';
+import NightChart from './NightChart';
 
 const { width: windowWidth } = Dimensions.get('window');
 
@@ -62,7 +63,7 @@ export default connect(state => ({ nightInfo: getNightInfo(state) }))(
                 <Moon phase={moonPhase} scale={0.5} />
               </View>
               <Animated.View style={{ flex: 1, padding: 5 }}>
-                <Text>hellobello</Text>
+                <NightChart />
               </Animated.View>
             </View>
           </TouchableWithoutFeedback>
