@@ -60,12 +60,12 @@ class Item extends React.PureComponent<{ object: NgcInfo }> {
               <Text style={styles.propertyValue}>{from}</Text>
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={styles.propertyLabeL}>To</Text>
-              <Text style={styles.propertyValue}>{to}</Text>
-            </View>
-            <View style={{ flex: 1 }}>
               <Text style={styles.propertyLabeL}>Max / Alt</Text>
               <Text style={styles.propertyValue}>{max}</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.propertyLabeL}>To</Text>
+              <Text style={styles.propertyValue}>{to}</Text>
             </View>
             <View style={{ flex: 1 }}>
               <Text style={styles.propertyLabeL}>Sum</Text>
