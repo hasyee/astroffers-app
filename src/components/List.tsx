@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { FlatList, View, Text, TouchableNativeFeedback, StyleSheet, Picker, TextInput } from 'react-native';
 import { NgcInfo, resolveTypes, resolveConstellation } from 'astroffers-core';
 import { ListItemProp } from '../types';
-import { getList, isFiltering, getSortBy } from '../selectors';
+import { getList, isFiltering, getSortBy, getMoonless } from '../selectors';
 import { sort } from '../actions';
 import display from '../utils/display';
 import IconButton from './IconButton';
@@ -92,7 +92,8 @@ export default connect(
   state => ({
     objects: getList(state),
     isFiltering: isFiltering(state),
-    sortBy: getSortBy(state)
+    sortBy: getSortBy(state),
+    moonless: getMoonless(state)
   }),
   { sort }
 )(
@@ -101,6 +102,7 @@ export default connect(
       objects: NgcInfo[];
       isFiltering: boolean;
       sortBy: ListItemProp;
+      moonless: boolean;
       sort: typeof sort;
     },
     { isOpenFilter: boolean; filter: { [key in ListItemProp]?: string } }
@@ -207,20 +209,31 @@ export default connect(
     }
 
     render() {
-      const { sortBy, isFiltering, objects } = this.props;
+      const { sortBy, isFiltering, objects, moonless } = this.props;
       const { filter } = this.state;
       if (isFiltering || !objects) return null;
       return (
         <View style={{ flex: 1, width: '100%' }}>
           {this.renderHeader()}
-          <FlatList
-            style={{ flex: 1 }}
-            ref={list => (this.list = list)}
-            keyExtractor={({ object }) => object.ngc.toString()}
-            data={objects.filter(search(filter))}
-            extraData={{ sortBy, filter }}
-            renderItem={({ item: object }) => <Item object={object} />}
-          />
+          {objects.length > 0 ? (
+            <FlatList
+              style={{ flex: 1 }}
+              ref={list => (this.list = list)}
+              keyExtractor={({ object }) => object.ngc.toString()}
+              data={objects.filter(search(filter))}
+              extraData={{ sortBy, filter }}
+              renderItem={({ item: object }) => <Item object={object} />}
+            />
+          ) : (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={{ fontSize: 20, marginBottom: 20 }}>No results to show</Text>
+              {moonless ? (
+                <Text style={{ color: '#444' }}>
+                  Try to turn off the 'Moonless night only' filter
+                </Text>
+              ) : null}
+            </View>
+          )}
         </View>
       );
     }
