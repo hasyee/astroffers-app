@@ -47,7 +47,7 @@ class Item extends React.PureComponent<{ object: NgcInfo }> {
     const { from, to, max, sum, magnitude, surfaceBrightness } = display(object);
     return (
       <TouchableNativeFeedback>
-        <View style={{ borderBottomColor: '#ddd', borderBottomWidth: 1, padding: 15 }}>
+        <View style={{ borderBottomColor: '#ddd', borderBottomWidth: 1, padding: 20 }}>
           <View style={{ marginBottom: 10 }}>
             <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{this.getTitle()}</Text>
             <Text>
@@ -139,7 +139,8 @@ export default connect(
       return (
         <View
           style={{
-            padding: 5,
+            paddingVertical: 5,
+            paddingHorizontal: 10,
             elevation: 3,
             backgroundColor: '#EEE'
           }}
