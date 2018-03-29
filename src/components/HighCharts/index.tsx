@@ -4,6 +4,8 @@ import jquery from './jquery';
 import highcharts from './highcharts';
 import highchartsMore from './highcharts-more';
 
+const bundle = [ jquery, highcharts, highchartsMore ].join('\n\n');
+
 const win = Dimensions.get('window');
 export default class HighCharts extends React.PureComponent<
   { options?: any; config: any; style?: any },
@@ -30,13 +32,7 @@ export default class HighCharts extends React.PureComponent<
               </style>
               <head>
                   <script>
-                    ${jquery}
-                  </script>
-                  <script>
-                    ${highcharts}
-                  </script>
-                  <script>
-                    ${highchartsMore}
+                    ${bundle}
                   </script>
                   <script>
                   $(function () {
