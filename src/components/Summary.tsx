@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Animated, View, Text, TouchableWithoutFeedback, Dimensions } from 'react-native';
+const moment = require('moment');
+import { Animated, View, Text, TouchableNativeFeedback, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { NightInfo } from 'astroffers-core';
-import { getNightInfo } from '../selectors';
+import { getNightInfo, getCount, getMoonless } from '../selectors';
 import Moon from './Moon';
 import NightChart from './NightChart';
 
@@ -12,8 +13,12 @@ const COLLAPSED_HEIGHT = 60;
 const EXPANDED_HEIGHT = 300;
 const DURATION = 100;
 
-export default connect(state => ({ nightInfo: getNightInfo(state) }))(
-  class extends React.PureComponent<{ nightInfo: NightInfo }> {
+export default connect(state => ({
+  nightInfo: getNightInfo(state),
+  count: getCount(state),
+  moonless: getMoonless(state)
+}))(
+  class extends React.PureComponent<{ nightInfo: NightInfo; count: number; moonless: boolean }> {
     state = {
       height: new Animated.Value(EXPANDED_HEIGHT)
     };
@@ -27,10 +32,24 @@ export default connect(state => ({ nightInfo: getNightInfo(state) }))(
       }
     };
 
+    getNightStart() {
+      const { moonless, nightInfo: { moonlessNight, astroNight } } = this.props;
+      return moonless
+        ? moonlessNight && Number.isFinite(moonlessNight.start) ? moment(moonlessNight.start).format('HH:mm') : ''
+        : astroNight && Number.isFinite(astroNight.start) ? moment(astroNight.start).format('HH:mm') : '';
+    }
+
+    getNightEnd() {
+      const { moonless, nightInfo: { moonlessNight, astroNight } } = this.props;
+      return moonless
+        ? moonlessNight && Number.isFinite(moonlessNight.end) ? moment(moonlessNight.end).format('HH:mm') : ''
+        : astroNight && Number.isFinite(astroNight.end) ? moment(astroNight.end).format('HH:mm') : '';
+    }
+
     render() {
-      const { nightInfo } = this.props;
+      const { nightInfo, count, moonless } = this.props;
       if (!nightInfo) return null;
-      const { moonPhase } = nightInfo;
+      const { moonPhase, moonlessNight, astroNight } = nightInfo;
       return (
         <View style={{ width: '100%', backgroundColor: 'white', elevation: 3 }}>
           <View
@@ -39,21 +58,26 @@ export default connect(state => ({ nightInfo: getNightInfo(state) }))(
               alignItems: 'center',
               justifyContent: 'center',
               paddingHorizontal: 20,
-              paddingVertical: 5
+              paddingTop: 5
             }}
           >
-            <View style={{ alignItems: 'flex-start', justifyContent: 'center', flex: 1 }}>
-              <Text style={{ fontSize: 20 }}>1400</Text>
+            <View style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center' }}>
+              <Text style={{ fontSize: 23 }}>{count}</Text>
               <Text style={{ fontSize: 10 }}>total results</Text>
             </View>
-            <View style={{ flex: 1, alignItems: 'center' }}>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
+              <View style={{ alignItems: 'flex-start', justifyContent: 'center' }}>
+                <Text style={{ fontSize: 12 }}>Moon</Text>
+                <Text style={{ fontSize: 12 }}>phase</Text>
+              </View>
               <Moon phase={moonPhase} scale={0.5} />
             </View>
-            <View style={{ flex: 1, alignItems: 'center' }}>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-end', flexDirection: 'row' }}>
+              <View style={{ alignItems: 'flex-start', justifyContent: 'center' }}>
+                <Text style={{ fontSize: 12 }}>{this.getNightStart()}</Text>
+                <Text style={{ fontSize: 12 }}>{this.getNightEnd()}</Text>
+              </View>
               <NightChart />
-            </View>
-            <View style={{ flex: 1, alignItems: 'flex-end' }}>
-              <Text>N</Text>
             </View>
           </View>
         </View>
