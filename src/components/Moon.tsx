@@ -33,9 +33,11 @@ export default class extends React.PureComponent<{ phase: number; scale?: number
     const { phase, scale } = this.props;
     const width = 100 * scale;
     const height = 102 * scale;
+    const paddingTop = height / 5;
     const viewBoxSize = 200 * scale;
+    console.log(paddingTop);
     return (
-      <View>
+      <View style={{ justifyContent: 'center', alignItems: 'center', width, height, paddingTop }}>
         <Svg viewBox={`0 0 ${viewBoxSize} ${viewBoxSize}`} width={width} height={height}>
           <Path
             d="m100,0 a20,20 0 1,1 0,150 a20,20 0 1,1 0,-150"

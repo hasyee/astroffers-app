@@ -151,8 +151,7 @@ export default connect(
       return (
         <Animated.View
           style={{
-            paddingVertical: 5,
-            paddingHorizontal: 10,
+            padding: 5,
             height: filterHeight,
             elevation: 3,
             backgroundColor: 'white'
@@ -165,7 +164,7 @@ export default connect(
               justifyContent: 'space-between'
             }}
           >
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 15 }}>
               <Text style={{ fontSize: 16, color: 'black' }}>Sort by</Text>
               <Picker
                 mode="dropdown"
@@ -189,7 +188,7 @@ export default connect(
             <IconButton icon="ic_action_search" onPress={this.handleToggleFilter} />
           </View>
 
-          <View style={{ padding: 0 }}>
+          <View style={{ paddingHorizontal: 15 }}>
             <View style={styles.searchItem}>
               <Text style={styles.searchLabeL}>NGC</Text>
               <LazyInput

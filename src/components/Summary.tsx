@@ -7,7 +7,7 @@ import Moon from './Moon';
 
 const { width: windowWidth } = Dimensions.get('window');
 
-const COLLAPSED_HEIGHT = 56;
+const COLLAPSED_HEIGHT = 60;
 const EXPANDED_HEIGHT = 300;
 const DURATION = 100;
 
@@ -46,7 +46,19 @@ export default connect(state => ({ nightInfo: getNightInfo(state) }))(
         >
           <TouchableWithoutFeedback onPress={this.handlePress}>
             <View style={{ flex: 1 }}>
-              <View style={{ padding: 8 }}>
+              <View
+                style={{
+                  height: COLLAPSED_HEIGHT,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  paddingHorizontal: 15
+                }}
+              >
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                  <Text style={{ fontSize: 20 }}>1400</Text>
+                  <Text style={{ fontSize: 10 }}>total results</Text>
+                </View>
                 <Moon phase={moonPhase} scale={0.5} />
               </View>
               <Animated.View style={{ flex: 1, padding: 5 }}>
