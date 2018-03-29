@@ -31,46 +31,32 @@ export default connect(state => ({ nightInfo: getNightInfo(state) }))(
       const { nightInfo } = this.props;
       if (!nightInfo) return null;
       const { moonPhase } = nightInfo;
-      const { height } = this.state;
       return (
-        <Animated.View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height,
-            width: '100%',
-            backgroundColor: 'white',
-            elevation: 10
-          }}
-        >
-          <TouchableWithoutFeedback onPress={this.handlePress}>
-            <View style={{ flex: 1 }}>
-              <View
-                style={{
-                  height: COLLAPSED_HEIGHT,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  paddingHorizontal: 15
-                }}
-              >
-                <View style={{ justifyContent: 'center', flex: 1 }}>
-                  <Text style={{ fontSize: 20 }}>1400</Text>
-                  <Text style={{ fontSize: 10 }}>total results</Text>
-                </View>
-                <View style={{ flex: 1, alignItems: 'center' }}>
-                  <Moon phase={moonPhase} scale={0.5} />
-                </View>
-                <View style={{ flex: 1, alignItems: 'center' }}>
-                  <NightChart />
-                </View>
-              </View>
-              <Animated.View style={{ flex: 1, padding: 5 }} />
+        <View style={{ width: '100%', backgroundColor: 'white', elevation: 3 }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingHorizontal: 20,
+              paddingVertical: 5
+            }}
+          >
+            <View style={{ alignItems: 'flex-start', justifyContent: 'center', flex: 1 }}>
+              <Text style={{ fontSize: 20 }}>1400</Text>
+              <Text style={{ fontSize: 10 }}>total results</Text>
             </View>
-          </TouchableWithoutFeedback>
-        </Animated.View>
+            <View style={{ flex: 1, alignItems: 'center' }}>
+              <Moon phase={moonPhase} scale={0.5} />
+            </View>
+            <View style={{ flex: 1, alignItems: 'center' }}>
+              <NightChart />
+            </View>
+            <View style={{ flex: 1, alignItems: 'flex-end' }}>
+              <Text>N</Text>
+            </View>
+          </View>
+        </View>
       );
     }
   }

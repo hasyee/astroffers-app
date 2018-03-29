@@ -12,8 +12,8 @@ export default connect(state => ({ isFiltering: isFiltering(state) }))(
       return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           {isFiltering && <ProgressBarAndroid />}
-          {!isFiltering && <List />}
           {!isFiltering && <Summary />}
+          {!isFiltering && <List />}
         </View>
       );
     }

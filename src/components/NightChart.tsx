@@ -7,7 +7,7 @@ import { getNightInfo, getDate } from '../selectors';
 
 type Band = { from: Hour; to: Hour; thickness: number; color: string; innerRadius: number };
 
-const SIZE = 65;
+const SIZE = 50;
 
 export default connect(state => ({ nightInfo: getNightInfo(state), date: getDate(state) }))(
   class extends React.PureComponent<{ date: Timestamp; nightInfo: NightInfo }> {
@@ -67,7 +67,7 @@ const getConfig = (date: Timestamp, { night, moonlessNight, astroNight }: NightI
   pane: {
     startAngle: 0,
     endAngle: 360,
-    size: '100%'
+    size: '150%'
   },
 
   legend: {

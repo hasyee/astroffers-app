@@ -35,7 +35,6 @@ export default class extends React.PureComponent<{ phase: number; scale?: number
     const height = 102 * scale;
     const paddingTop = height / 5;
     const viewBoxSize = 200 * scale;
-    console.log(paddingTop);
     return (
       <View style={{ justifyContent: 'center', alignItems: 'center', width, height, paddingTop }}>
         <Svg viewBox={`0 0 ${viewBoxSize} ${viewBoxSize}`} width={width} height={height}>

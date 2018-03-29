@@ -225,7 +225,7 @@ export default connect(
       const { filter } = this.state;
       if (isFiltering || !objects) return null;
       return (
-        <View style={{ flex: 1, width: '100%', marginBottom: 60 }}>
+        <View style={{ flex: 1, width: '100%' }}>
           {this.renderHeader()}
           {objects.length > 0 ? (
             <FlatList
