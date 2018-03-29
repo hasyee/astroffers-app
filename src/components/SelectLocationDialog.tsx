@@ -28,17 +28,21 @@ export default connect(null, { fetchLocation })(
 
     constructor(props) {
       super(props);
-      this.state = this.getInitialState();
+      this.state = this.getInitialState(this.props);
     }
 
     private map: MapView;
 
-    getInitialState() {
-      return {
-        mapType: 'standard' as MapType,
-        latitude: this.props.latitude,
-        longitude: this.props.longitude
-      };
+    getInitialState(props) {
+      const { latitude, longitude } = props;
+      const coords =
+        !Number.isFinite(latitude) || !Number.isFinite(longitude)
+          ? { latitude: 47, longitude: 19 }
+          : {
+              latitude,
+              longitude
+            };
+      return { mapType: this.state ? this.state.mapType : 'standard' as MapType, ...coords };
     }
 
     handleChangeMapType = mapType => this.setState({ mapType });
@@ -53,7 +57,7 @@ export default connect(null, { fetchLocation })(
         );
 
     handleCancel = () => {
-      this.setState(this.getInitialState());
+      this.setState(this.getInitialState(this.props));
       this.props.onClose();
     };
 
@@ -65,10 +69,7 @@ export default connect(null, { fetchLocation })(
 
     componentWillUpdate(nextProps) {
       if (nextProps.latitude !== this.props.latitude || nextProps.longitude !== this.props.longitude) {
-        this.setState({
-          latitude: nextProps.latitude,
-          longitude: nextProps.longitude
-        });
+        this.setState(this.getInitialState(nextProps));
       }
     }
 
