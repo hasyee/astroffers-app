@@ -20,7 +20,7 @@ import SelectLocationDialog from './SelectLocationDialog';
 
 type Range = { min: number; max: number };
 
-const wait = cb => () => setTimeout(cb, 100);
+const wait = cb => () => setTimeout(cb);
 const isNegZero = (value: number) => Object.is(value, -0);
 const resolveValue = (value: number) => (Number.isFinite(value) ? (isNegZero(value) ? '-' : value.toString()) : '');
 const checkRange = (value: number, range?: Range) =>
@@ -126,7 +126,7 @@ export default connect(state => ({ filter: getFilter(state) }), {
           <MultiSelectDialog
             show={isOpenConstellationFilterDialog}
             onClose={this.handleConstellationDialogClose}
-            data={Object.keys(constellations).map(value => ({
+            options={Object.keys(constellations).map(value => ({
               value,
               label: constellations[value],
               checked: constellationFilter[value]
@@ -138,7 +138,7 @@ export default connect(state => ({ filter: getFilter(state) }), {
           <MultiSelectDialog
             show={isOpenTypeFilterDialog}
             onClose={this.handleTypeFilterDailogClose}
-            data={Object.keys(objectTypes).map(value => ({ value, label: objectTypes[value], checked: types[value] }))}
+            options={Object.keys(objectTypes).map(value => ({ value, label: objectTypes[value], checked: types[value] }))}
             onSelect={key => toggleSetFilter('types', key)}
             onSelectAll={() => changeAllTypeFilter(true)}
             onSelectNone={() => changeAllTypeFilter(false)}

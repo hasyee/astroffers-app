@@ -1,13 +1,22 @@
 import * as React from 'react';
-import { View, FlatList, Text, TouchableNativeFeedback, Image } from 'react-native';
+import { View, ScrollView, Text, TouchableNativeFeedback, Image } from 'react-native';
 import Button from './Button';
 import Dialog from './Dialog';
 
-class Item extends React.PureComponent<{ label: string; checked: boolean; onPress: () => void }> {
+class Item extends React.PureComponent<{
+  value: string;
+  label: string;
+  checked: boolean;
+  onPress: (value: string) => void;
+}> {
+  handlePress = () => {
+    this.props.onPress(this.props.value);
+  };
+
   render() {
     const { label, checked, onPress } = this.props;
     return (
-      <TouchableNativeFeedback onPress={onPress}>
+      <TouchableNativeFeedback onPress={this.handlePress}>
         <View style={{ padding: 10, flexDirection: 'row', alignItems: 'center' }}>
           <Image
             source={{ uri: 'ic_check' }}
@@ -26,7 +35,7 @@ export default class extends React.PureComponent<{
   onSelect?: (value: string) => void;
   onSelectAll?: () => void;
   onSelectNone?: () => void;
-  data?: { value: string; label: string; checked: boolean }[];
+  options?: { value: string; label: string; checked: boolean }[];
 }> {
   static defaultProps = {
     show: false,
@@ -37,19 +46,18 @@ export default class extends React.PureComponent<{
     data: []
   };
 
+  handleSelect = value => this.props.onSelect(value);
+
   render() {
-    const { show, onClose, data, onSelect, onSelectAll, onSelectNone } = this.props;
+    const { show, onClose, options, onSelect, onSelectAll, onSelectNone } = this.props;
     return (
       <Dialog show={show} onClose={onClose}>
         <View>
-          <FlatList
-            style={{ padding: 10 }}
-            data={data}
-            keyExtractor={item => item.value}
-            renderItem={({ item: { value, label, checked } }) => (
-              <Item label={label} checked={checked} onPress={() => onSelect(value)} />
-            )}
-          />
+          <ScrollView style={{ padding: 10 }}>
+            {options.map(({ value, label, checked }) => (
+              <Item key={value} value={value} label={label} checked={checked} onPress={this.handleSelect} />
+            ))}
+          </ScrollView>
         </View>
         <View style={{ padding: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
           <View style={{ flexDirection: 'row' }}>
