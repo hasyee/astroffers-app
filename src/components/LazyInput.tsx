@@ -42,6 +42,7 @@ export default class extends React.PureComponent<
         keyboardType={this.props.numeric ? 'numeric' : 'default'}
         style={this.props.style}
         onEndEditing={this.handleEndEditing}
+        underlineColorAndroid="transparent"
       />
     );
   }
