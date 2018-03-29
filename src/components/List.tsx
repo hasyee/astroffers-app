@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { FlatList, View, Text, TouchableNativeFeedback, StyleSheet, Picker, TextInput } from 'react-native';
+import { FlatList, View, Text, Animated, TouchableNativeFeedback, StyleSheet, Picker, TextInput } from 'react-native';
 import { NgcInfo, resolveTypes, resolveConstellation } from 'astroffers-core';
 import { ListItemProp } from '../types';
 import { getList, isFiltering, getSortBy, getMoonless } from '../selectors';
@@ -88,6 +88,9 @@ class Item extends React.PureComponent<{ object: NgcInfo }> {
   }
 }
 
+const FILTER_COLLAPSED_HEIGHT = 50;
+const FILTER_EXPANDED_HEIGHT = 180;
+
 export default connect(
   state => ({
     objects: getList(state),
@@ -105,12 +108,12 @@ export default connect(
       moonless: boolean;
       sort: typeof sort;
     },
-    { isOpenFilter: boolean; filter: { [key in ListItemProp]?: string } }
+    { filterHeight: Animated.Value; filter: { [key in ListItemProp]?: string } }
   > {
     private list;
 
     state = {
-      isOpenFilter: false,
+      filterHeight: new Animated.Value(FILTER_COLLAPSED_HEIGHT),
       filter: {
         [ListItemProp.NGC]: '',
         [ListItemProp.MESSIER]: '',
@@ -124,7 +127,13 @@ export default connect(
       }
     };
 
-    handleToggleFilter = () => this.setState({ isOpenFilter: !this.state.isOpenFilter });
+    handleToggleFilter = () => {
+      if (this.state.filterHeight['_value'] === FILTER_COLLAPSED_HEIGHT) {
+        Animated.timing(this.state.filterHeight, { toValue: FILTER_EXPANDED_HEIGHT, duration: 100 }).start();
+      } else {
+        Animated.timing(this.state.filterHeight, { toValue: FILTER_COLLAPSED_HEIGHT, duration: 100 }).start();
+      }
+    };
 
     handleFilterChange = (prop: ListItemProp) => value => {
       this.setState({ filter: { ...this.state.filter, [prop]: value } });
@@ -137,12 +146,13 @@ export default connect(
 
     renderHeader() {
       const { sortBy } = this.props;
-      const { isOpenFilter, filter } = this.state;
+      const { filterHeight, filter } = this.state;
       return (
-        <View
+        <Animated.View
           style={{
             paddingVertical: 5,
             paddingHorizontal: 10,
+            height: filterHeight,
             elevation: 3,
             backgroundColor: '#EEE'
           }}
@@ -177,37 +187,36 @@ export default connect(
             </View>
             <IconButton icon="ic_action_search" onPress={this.handleToggleFilter} />
           </View>
-          {isOpenFilter && (
-            <View style={{ padding: 10 }}>
-              <View style={styles.searchItem}>
-                <Text style={styles.searchLabeL}>NGC</Text>
-                <LazyInput
-                  style={styles.searchInput}
-                  numeric
-                  value={filter[ListItemProp.NGC]}
-                  onTypeEnd={this.handleFilterChange(ListItemProp.NGC)}
-                />
-              </View>
-              <View style={styles.searchItem}>
-                <Text style={styles.searchLabeL}>Messier</Text>
-                <LazyInput
-                  style={styles.searchInput}
-                  numeric
-                  value={filter[ListItemProp.MESSIER]}
-                  onTypeEnd={this.handleFilterChange(ListItemProp.MESSIER)}
-                />
-              </View>
-              <View style={styles.searchItem}>
-                <Text style={styles.searchLabeL}>Name</Text>
-                <LazyInput
-                  style={styles.searchInput}
-                  value={filter[ListItemProp.NAME]}
-                  onTypeEnd={this.handleFilterChange(ListItemProp.NAME)}
-                />
-              </View>
+
+          <View style={{ padding: 0 }}>
+            <View style={styles.searchItem}>
+              <Text style={styles.searchLabeL}>NGC</Text>
+              <LazyInput
+                style={styles.searchInput}
+                numeric
+                value={filter[ListItemProp.NGC]}
+                onTypeEnd={this.handleFilterChange(ListItemProp.NGC)}
+              />
             </View>
-          )}
-        </View>
+            <View style={styles.searchItem}>
+              <Text style={styles.searchLabeL}>Messier</Text>
+              <LazyInput
+                style={styles.searchInput}
+                numeric
+                value={filter[ListItemProp.MESSIER]}
+                onTypeEnd={this.handleFilterChange(ListItemProp.MESSIER)}
+              />
+            </View>
+            <View style={styles.searchItem}>
+              <Text style={styles.searchLabeL}>Name</Text>
+              <LazyInput
+                style={styles.searchInput}
+                value={filter[ListItemProp.NAME]}
+                onTypeEnd={this.handleFilterChange(ListItemProp.NAME)}
+              />
+            </View>
+          </View>
+        </Animated.View>
       );
     }
 
