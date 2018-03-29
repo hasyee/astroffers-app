@@ -138,7 +138,11 @@ export default connect(state => ({ filter: getFilter(state) }), {
           <MultiSelectDialog
             show={isOpenTypeFilterDialog}
             onClose={this.handleTypeFilterDailogClose}
-            options={Object.keys(objectTypes).map(value => ({ value, label: objectTypes[value], checked: types[value] }))}
+            options={Object.keys(objectTypes).map(value => ({
+              value,
+              label: objectTypes[value],
+              checked: types[value]
+            }))}
             onSelect={key => toggleSetFilter('types', key)}
             onSelectAll={() => changeAllTypeFilter(true)}
             onSelectNone={() => changeAllTypeFilter(false)}
@@ -219,7 +223,11 @@ export default connect(state => ({ filter: getFilter(state) }), {
                   value: resolveValue(brightnessFilter === BirghtnessType.magnitude ? magnitude : surfaceBrightness),
                   onChangeText: this.handleChange(brightnessFilter)
                 }}
-                error={getErrorMessage(brightnessFilter === BirghtnessType.magnitude ? magnitude : surfaceBrightness)}
+                error={
+                  getErrorMessage(brightnessFilter === BirghtnessType.magnitude ? magnitude : surfaceBrightness) ? (
+                    ''
+                  ) : null
+                }
                 containerStyle={{ marginBottom: 0, width: 50 }}
               />
               <View style={{ borderBottomWidth: 1, borderColor: 'rgba(0, 0, 0, 0.3)' }}>

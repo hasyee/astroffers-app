@@ -16,13 +16,18 @@ export default class extends React.PureComponent<{
 
   render() {
     const { label, inputProps, containerStyle, error } = this.props;
+    const hasError = typeof error === 'string';
     return (
       <View style={{ marginBottom: 20, ...containerStyle }}>
-        <Text style={{ fontSize: 14, textAlign: 'left', color: error ? 'rgb(244, 67, 54)' : 'rgba(0, 0, 0, 0.3)' }}>
+        <Text style={{ fontSize: 14, textAlign: 'left', color: hasError ? 'rgb(244, 67, 54)' : 'rgba(0, 0, 0, 0.3)' }}>
           {label}
         </Text>
         <TextInput
-          style={{ borderBottomWidth: 1, borderColor: error ? 'rgb(244, 67, 54)' : 'rgba(0, 0, 0, 0.3)', height: 40 }}
+          style={{
+            borderBottomWidth: 1,
+            borderColor: hasError ? 'rgb(244, 67, 54)' : 'rgba(0, 0, 0, 0.3)',
+            height: 40
+          }}
           selectionColor="#01579b"
           underlineColorAndroid="transparent"
           {...inputProps}
