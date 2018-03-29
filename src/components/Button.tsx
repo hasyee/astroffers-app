@@ -6,33 +6,48 @@ export default class extends React.PureComponent<{
   color?: string;
   onPress?: () => void;
   raised?: boolean;
+  disabled?: boolean;
 }> {
   static defaultProps = {
     color: 'black',
     onPress: () => {},
-    raised: false
+    raised: false,
+    disabled: false
   };
 
-  render() {
-    const { title, color, onPress, raised } = this.props;
+  renderButton() {
+    const { title, color, onPress, raised, disabled } = this.props;
     return (
-      <TouchableNativeFeedback onPress={onPress}>
-        <View
+      <View
+        style={{
+          backgroundColor: raised ? (disabled ? '#DDD' : color) : 'transparent',
+          elevation: raised && !disabled ? 3 : 0,
+          height: 36,
+          minWidth: raised ? 88 : 64,
+          paddingHorizontal: raised ? 16 : 8,
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        <Text
           style={{
-            backgroundColor: raised ? color : 'transparent',
-            elevation: raised ? 3 : 0,
-            height: 36,
-            minWidth: raised ? 88 : 64,
-            paddingHorizontal: raised ? 16 : 8,
-            justifyContent: 'center',
-            alignItems: 'center'
+            color: disabled ? '#999' : raised ? 'white' : color,
+            fontSize: 14,
+            fontWeight: 'bold'
           }}
         >
-          <Text style={{ color: raised ? 'white' : color, fontSize: 14, fontWeight: 'bold' }}>
-            {title.toUpperCase()}
-          </Text>
-        </View>
-      </TouchableNativeFeedback>
+          {title.toUpperCase()}
+        </Text>
+      </View>
+    );
+  }
+
+  render() {
+    const { onPress, disabled } = this.props;
+    return disabled ? (
+      this.renderButton()
+    ) : (
+      <TouchableNativeFeedback onPress={onPress}>{this.renderButton()}</TouchableNativeFeedback>
     );
   }
 }

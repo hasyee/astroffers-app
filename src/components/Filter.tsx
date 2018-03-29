@@ -25,7 +25,7 @@ const isNegZero = (value: number) => Object.is(value, -0);
 const resolveValue = (value: number) => (Number.isFinite(value) ? (isNegZero(value) ? '-' : value.toString()) : '');
 const checkRange = (value: number, range?: Range) =>
   !Number.isFinite(value) || !range || (value >= range.min && value <= range.max);
-const getErrorMessage = (value: number): string => !Number.isFinite(value) && 'This field is required';
+const getErrorMessage = (value: number): string => !Number.isFinite(value) && '';
 
 export default connect(state => ({ filter: getFilter(state) }), {
   changeFilter,
@@ -89,6 +89,31 @@ export default connect(state => ({ filter: getFilter(state) }), {
 
     componentDidMount() {
       this.props.filterObjects();
+    }
+
+    getFilterButtonDisabled() {
+      const {
+        filter: {
+          latitude,
+          longitude,
+          observationTime,
+          twilight,
+          altitude,
+          brightnessFilter,
+          magnitude,
+          surfaceBrightness
+        }
+      } = this.props;
+      return !(
+        Number.isFinite(latitude) &&
+        Number.isFinite(longitude) &&
+        Number.isFinite(observationTime) &&
+        Number.isFinite(twilight) &&
+        Number.isFinite(altitude) &&
+        (brightnessFilter === BirghtnessType.magnitude
+          ? Number.isFinite(magnitude)
+          : Number.isFinite(surfaceBrightness))
+      );
     }
 
     render() {
@@ -223,11 +248,7 @@ export default connect(state => ({ filter: getFilter(state) }), {
                   value: resolveValue(brightnessFilter === BirghtnessType.magnitude ? magnitude : surfaceBrightness),
                   onChangeText: this.handleChange(brightnessFilter)
                 }}
-                error={
-                  getErrorMessage(brightnessFilter === BirghtnessType.magnitude ? magnitude : surfaceBrightness) ? (
-                    ''
-                  ) : null
-                }
+                error={getErrorMessage(brightnessFilter === BirghtnessType.magnitude ? magnitude : surfaceBrightness)}
                 containerStyle={{ marginBottom: 0, width: 50 }}
               />
               <View style={{ borderBottomWidth: 1, borderColor: 'rgba(0, 0, 0, 0.3)' }}>
@@ -249,7 +270,13 @@ export default connect(state => ({ filter: getFilter(state) }), {
           </ScrollView>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 20 }}>
             <Button title="RESET" onPress={resetFilter} />
-            <Button title="FILTER" color="#01579b" raised onPress={this.handleSubmit} />
+            <Button
+              title="FILTER"
+              color="#01579b"
+              raised
+              onPress={this.handleSubmit}
+              disabled={this.getFilterButtonDisabled()}
+            />
           </View>
         </View>
       );
