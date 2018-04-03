@@ -106,7 +106,7 @@ export default connect(state => ({
                 <Text style={{ fontSize: 12 }}>Moon</Text>
                 <Text style={{ fontSize: 12 }}>phase</Text>
               </View>
-              <Moon phase={moonPhase} scale={0.5} />
+              <Moon phase={moonPhase} />
             </View>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-end', flexDirection: 'row' }}>
               <View style={{ alignItems: 'flex-start', justifyContent: 'center' }}>
