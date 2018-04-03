@@ -5,17 +5,19 @@ export default class extends React.PureComponent<{
   label?: string;
   inputProps?: Object;
   containerStyle?: any;
+  inputStyle?: any;
   error?: string;
 }> {
   static defaultProps = {
     label: '',
     inputProps: {},
     containerStyle: {},
+    inputStyle: {},
     error: null
   };
 
   render() {
-    const { label, inputProps, containerStyle, error } = this.props;
+    const { label, inputProps, containerStyle, inputStyle, error } = this.props;
     const hasError = typeof error === 'string';
     return (
       <View style={{ marginBottom: 20, ...containerStyle }}>
@@ -26,7 +28,8 @@ export default class extends React.PureComponent<{
           style={{
             borderBottomWidth: 1,
             borderColor: hasError ? 'rgb(244, 67, 54)' : 'rgba(0, 0, 0, 0.3)',
-            height: 40
+            height: 40,
+            ...inputStyle
           }}
           selectionColor="#01579b"
           underlineColorAndroid="transparent"

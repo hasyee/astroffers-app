@@ -1,16 +1,13 @@
 import * as React from 'react';
+import { DatePickerAndroid, View, TouchableWithoutFeedback } from 'react-native';
 const moment = require('moment');
 import TextInput from './TextInput';
-
-import { DatePickerAndroid } from 'react-native';
 
 export default class extends React.PureComponent<{ value?: number; onChange?: (date: number) => void }> {
   static defaultProps = {
     value: Date.now(),
     onChange: date => {}
   };
-
-  picker;
 
   state = {
     value: this.props.value
@@ -22,8 +19,8 @@ export default class extends React.PureComponent<{ value?: number; onChange?: (d
     }
   }
 
-  handleFocus = async () => {
-    this.picker.blur();
+  handlePress = async () => {
+    console.log('%%%%%%%%%%%%%%%%%%%%%');
     const { action, year, month, day } = await DatePickerAndroid.open({
       date: new Date(this.state.value)
     });
@@ -34,14 +31,18 @@ export default class extends React.PureComponent<{ value?: number; onChange?: (d
 
   render() {
     return (
-      <TextInput
-        label="Date"
-        inputProps={{
-          value: moment(this.state.value).format('YYYY-MM-DD'),
-          onFocus: this.handleFocus,
-          ref: picker => (this.picker = picker)
-        }}
-      />
+      <TouchableWithoutFeedback onPress={this.handlePress}>
+        <View>
+          <TextInput
+            label="Date"
+            inputProps={{
+              value: moment(this.state.value).format('YYYY-MM-DD'),
+              editable: false
+            }}
+            inputStyle={{ color: 'black' }}
+          />
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

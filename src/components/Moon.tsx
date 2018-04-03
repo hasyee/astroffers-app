@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, WebView, StyleSheet } from 'react-native';
+import { View, WebView } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
 const getD = (phase: number): string => {
