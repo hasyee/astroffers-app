@@ -16,23 +16,24 @@ class Row extends React.PureComponent<{
   value2?: string | number;
 }> {
   render() {
+    const fontSize = 12;
     const { label1, label2, value1, value2 } = this.props;
     return (
       <View style={{ flexDirection: 'row' }}>
         <View style={{ flex: 1 }}>
-          <Text style={{ fontWeight: 'bold', fontSize: 11 }}>{label1}</Text>
+          <Text style={{ fontWeight: 'bold', fontSize }}>{label1}</Text>
         </View>
         <View style={{ flex: value2 ? 1 : 3 }}>
-          <Text style={{ fontSize: 11 }}>{value1}</Text>
+          <Text style={{ fontSize }}>{value1}</Text>
         </View>
         {label2 && (
           <View style={{ flex: 1 }}>
-            <Text style={{ fontWeight: 'bold', fontSize: 11 }}>{label2}</Text>
+            <Text style={{ fontWeight: 'bold', fontSize }}>{label2}</Text>
           </View>
         )}
         {value2 && (
           <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 11 }}>{value2}</Text>
+            <Text style={{ fontSize }}>{value2}</Text>
           </View>
         )}
       </View>
@@ -90,7 +91,7 @@ export default connect(
         <View style={{ flex: 1, width: WIDTH }}>
           <ScrollView>
             <Image source={{ uri: getObjectImgSrc(ngc) }} style={{ width: WIDTH, height: WIDTH }} />
-            <View style={{ padding: 20 }}>
+            <View style={{ padding: 10 }}>
               <View>
                 <Text style={{ fontSize: 20, color: 'black', maxWidth: '100%', marginBottom: 20 }}>{title}</Text>
               </View>
@@ -132,8 +133,8 @@ export default connect(
           pagingEnabled
           data={objects}
           windowSize={1}
-          maxToRenderPerBatch={1}
-          initialNumToRender={3}
+          maxToRenderPerBatch={5}
+          initialNumToRender={5}
           initialScrollIndex={initialIndex}
           getItemLayout={(data, index) => ({
             length: WIDTH,
