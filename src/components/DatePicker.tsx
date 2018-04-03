@@ -20,7 +20,6 @@ export default class extends React.PureComponent<{ value?: number; onChange?: (d
   }
 
   handlePress = async () => {
-    console.log('%%%%%%%%%%%%%%%%%%%%%');
     const { action, year, month, day } = await DatePickerAndroid.open({
       date: new Date(this.state.value)
     });
