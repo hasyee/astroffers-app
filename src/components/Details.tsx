@@ -2,10 +2,21 @@ import * as React from 'react';
 import { StyleSheet, Dimensions, View, Text, Image, ScrollView } from 'react-native';
 const { VirtualizedList } = require('react-native');
 import { connect } from 'react-redux';
-import { NgcInfo, getObjectImgSrc, resolveTypes, resolveConstellation, dmsToString } from 'astroffers-core';
-import { getOpenedNgcInfoIndex, getList, getMinAltitude } from '../selectors';
+import {
+  NgcInfo,
+  getObjectImgSrc,
+  resolveTypes,
+  resolveConstellation,
+  dmsToString,
+  CoordSeries,
+  NightInfo,
+  Az
+} from 'astroffers-core';
+import { getOpenedNgcInfoIndex, getList, getMinAltitude, getHorizontalCoords, getNightInfo } from '../selectors';
 import { openDetails } from '../actions';
 import { displayToDetails } from '../utils/display';
+import AltitudeChart from './AltitudeChart';
+import AzimuthChart from './AzimuthChart';
 
 const { width: WIDTH } = Dimensions.get('window');
 
@@ -45,7 +56,9 @@ export default connect(
   state => ({
     initialIndex: getOpenedNgcInfoIndex(state),
     objects: getList(state),
-    minAltitude: getMinAltitude(state)
+    minAltitude: getMinAltitude(state),
+    nightInfo: getNightInfo(state),
+    horizontalCoords: getHorizontalCoords(state)
   }),
   { openDetails }
 )(
@@ -53,6 +66,8 @@ export default connect(
     initialIndex: number;
     objects: NgcInfo[];
     minAltitude: number;
+    horizontalCoords: CoordSeries<Az>;
+    nightInfo: NightInfo;
     openDetails: typeof openDetails;
   }> {
     handleSwipe = e => {
@@ -86,7 +101,8 @@ export default connect(
         altitudeAtTransit
       } = displayToDetails(ngcInfo);
 
-      const minAltitude = this.props.minAltitude;
+      const { minAltitude, nightInfo, horizontalCoords } = this.props;
+
       return (
         <View style={{ flex: 1, width: WIDTH }}>
           <ScrollView>
@@ -95,7 +111,7 @@ export default connect(
               <View>
                 <Text style={{ fontSize: 20, color: 'black', maxWidth: '100%', marginBottom: 20 }}>{title}</Text>
               </View>
-              <View>
+              <View style={{ marginBottom: 20 }}>
                 <Row label1="Type" value1={resolveTypes(types).join(', ')} />
                 <Row label1="Constellation" value1={resolveConstellation(constellation)} />
                 <Row label1="Size" value1={size} />
@@ -113,6 +129,17 @@ export default connect(
                 <Row label1="Visibility from" value1={from} label2="Visibility to" value2={to} />
                 <Row label1="Best visibility" value1={max} label2="Altitude" value2={altitudeAtMax} />
                 <Row label1="Transit" value1={transit} label2="Altitude" value2={altitudeAtTransit} />
+              </View>
+              <View style={{ marginBottom: 20 }}>
+                <AltitudeChart
+                  minAltitude={minAltitude}
+                  ngcInfo={ngcInfo}
+                  horizontalCoords={horizontalCoords}
+                  nightInfo={nightInfo}
+                />
+              </View>
+              <View style={{ marginBottom: 20, alignItems: 'center' }}>
+                <AzimuthChart horizontalCoords={horizontalCoords} />
               </View>
             </View>
           </ScrollView>

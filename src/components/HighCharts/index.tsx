@@ -3,8 +3,9 @@ import { StyleSheet, Text, View, WebView, Dimensions } from 'react-native';
 import jquery from './jquery';
 import highcharts from './highcharts';
 import highchartsMore from './highcharts-more';
+import moment from './moment';
 
-const bundle = [ jquery, highcharts, highchartsMore ].join('\n\n');
+const bundle = [ jquery, highcharts, highchartsMore, moment ].join('\n\n');
 
 const win = Dimensions.get('window');
 export default class HighCharts extends React.PureComponent<
@@ -37,7 +38,7 @@ export default class HighCharts extends React.PureComponent<
                   <script>
                   $(function () {
                       Highcharts.setOptions(${JSON.stringify(this.props.options)});
-                      Highcharts.chart
+                      window.chart = Highcharts.chart
                       (
                         'container', `,
       end: `          );

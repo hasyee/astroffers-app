@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 const { connect } = require('react-redux');
-import Highcharts from './HighCharts';
+import HighCharts from './HighCharts';
 import { NightInfo, Interval, Timestamp, Hour, toNextDay, toMidnight, toNoon, getIntersection } from 'astroffers-core';
 import { getNightInfo, getDate } from '../selectors';
 
@@ -15,7 +15,7 @@ export default connect(state => ({ nightInfo: getNightInfo(state), date: getDate
       if (!this.props.nightInfo) return null;
       return (
         <View style={{ paddingTop: 5 }}>
-          <Highcharts config={getConfig(this.props.date, this.props.nightInfo)} style={{ width: SIZE, height: SIZE }} />
+          <HighCharts config={getConfig(this.props.date, this.props.nightInfo)} style={{ width: SIZE, height: SIZE }} />
         </View>
       );
     }
