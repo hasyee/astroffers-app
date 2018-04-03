@@ -253,7 +253,9 @@ export default connect(
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
               <Text style={{ fontSize: 20, marginBottom: 20 }}>No results to show</Text>
               {moonless ? (
-                <Text style={{ color: '#444' }}>Try to turn off the 'Moonless night only' filter</Text>
+                <Text style={{ color: '#444' }}>
+                  Try to turn off the <Text style={{ fontStyle: 'italic' }}>Moonless night only</Text> filter
+                </Text>
               ) : null}
             </View>
           )}

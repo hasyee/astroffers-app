@@ -30,6 +30,9 @@ export const isOpenDetails = ({ openedDetails }: State): boolean => !!openedDeta
 export const getOpenedNgcInfo = ({ result, openedDetails }: State): NgcInfo =>
   result ? result.list.find(info => info.object.ngc === openedDetails) : null;
 
+export const getOpenedNgcInfoIndex = ({ result, openedDetails }: State): number =>
+  result ? result.list.findIndex(info => info.object.ngc === openedDetails) : 0;
+
 export const getHorizontalCoords = (state: State): CoordSeries<Az> => {
   const ngcInfo = getOpenedNgcInfo(state);
   return ngcInfo
@@ -43,9 +46,3 @@ export const getHorizontalCoords = (state: State): CoordSeries<Az> => {
 };
 
 export const getMinAltitde = ({ result }: State): number => (result ? result.filter.altitude : null);
-
-export const getAdjacentDetails = direction => (state: State): number => {
-  if (!state.openedDetails || !state.result || !state.result.list || state.result.list.length === 0) return null;
-  const index = state.result.list.findIndex(ngcInfo => ngcInfo.object.ngc === state.openedDetails);
-  return state.result.list[index + direction] ? state.result.list[index + direction].object.ngc : null;
-};
