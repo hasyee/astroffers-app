@@ -15,7 +15,7 @@ import { NgcInfo, resolveTypes, resolveConstellation, getObjectImgSrc } from 'as
 import { ListItemProp } from '../types';
 import { getList, isFiltering, getSortBy, getMoonless } from '../selectors';
 import { openDetails, sort } from '../actions';
-import { display, getTitle } from '../utils/display';
+import { displayToList, getTitle } from '../utils/display';
 import IconButton from './IconButton';
 import LazyInput from './LazyInput';
 
@@ -51,7 +51,7 @@ const Item = connect(null, { openDetails })(
     render() {
       const { object } = this.props;
       const { object: { ngc, types, constellation } } = object;
-      const { from, to, max, sum, magnitude, surfaceBrightness } = display(object);
+      const { from, to, max, sum, magnitude, surfaceBrightness } = displayToList(object);
       return (
         <TouchableNativeFeedback onPress={this.handlePress}>
           <View style={{ borderBottomColor: '#ddd', borderBottomWidth: 1, padding: 20 }}>

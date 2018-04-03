@@ -45,4 +45,4 @@ export const getHorizontalCoords = (state: State): CoordSeries<Az> => {
     : null;
 };
 
-export const getMinAltitde = ({ result }: State): number => (result ? result.filter.altitude : null);
+export const getMinAltitude = ({ result }: State): number => (result ? result.filter.altitude : null);
