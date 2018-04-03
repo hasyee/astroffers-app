@@ -1,7 +1,17 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { FlatList, View, Text, Animated, TouchableNativeFeedback, StyleSheet, Picker, TextInput } from 'react-native';
-import { NgcInfo, resolveTypes, resolveConstellation } from 'astroffers-core';
+import {
+  FlatList,
+  View,
+  Text,
+  Animated,
+  TouchableNativeFeedback,
+  StyleSheet,
+  Picker,
+  TextInput,
+  Image
+} from 'react-native';
+import { NgcInfo, resolveTypes, resolveConstellation, getObjectImgSrc } from 'astroffers-core';
 import { ListItemProp } from '../types';
 import { getList, isFiltering, getSortBy, getMoonless } from '../selectors';
 import { sort } from '../actions';
@@ -43,16 +53,22 @@ class Item extends React.PureComponent<{ object: NgcInfo }> {
 
   render() {
     const { object } = this.props;
-    const { object: { types, constellation } } = object;
+    const { object: { ngc, types, constellation } } = object;
     const { from, to, max, sum, magnitude, surfaceBrightness } = display(object);
+    console.log(getObjectImgSrc(ngc))
     return (
       <TouchableNativeFeedback>
         <View style={{ borderBottomColor: '#ddd', borderBottomWidth: 1, padding: 20 }}>
-          <View style={{ marginBottom: 10 }}>
-            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{this.getTitle()}</Text>
-            <Text>
-              {resolveTypes(types).join(', ')} in {resolveConstellation(constellation)}
-            </Text>
+          <View style={{ marginBottom: 10, flexDirection: 'row' }}>
+            <View style={{ marginRight: 10 }}>
+              <Image source={{ uri: getObjectImgSrc(ngc) }} style={{ width: 40, height: 40, borderRadius: 20 }} />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{this.getTitle()}</Text>
+              <Text>
+                {resolveTypes(types).join(', ')} in {resolveConstellation(constellation)}
+              </Text>
+            </View>
           </View>
           <View style={{ flexDirection: 'row', marginBottom: 5 }}>
             <View style={{ flex: 1 }}>
