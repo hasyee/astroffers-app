@@ -14,8 +14,8 @@ import {
 import { NgcInfo, resolveTypes, resolveConstellation, getObjectImgSrc } from 'astroffers-core';
 import { ListItemProp } from '../types';
 import { getList, isFiltering, getSortBy, getMoonless } from '../selectors';
-import { sort } from '../actions';
-import display from '../utils/display';
+import { openDetails, sort } from '../actions';
+import { display, getTitle } from '../utils/display';
 import IconButton from './IconButton';
 import LazyInput from './LazyInput';
 
@@ -42,67 +42,64 @@ const styles = StyleSheet.create({
   }
 });
 
-class Item extends React.PureComponent<{ object: NgcInfo }> {
-  getTitle(): string {
-    const object = this.props.object ? this.props.object.object : null;
-    if (!object) return 'Unknown';
-    return [ `NGC ${object.ngc}`, object.messier ? `M ${object.messier}` : null, object.name || null ]
-      .filter(_ => _)
-      .join(' | ');
-  }
+const Item = connect(null, { openDetails })(
+  class extends React.PureComponent<{ object: NgcInfo; openDetails: typeof openDetails }> {
+    handlePress = () => {
+      this.props.openDetails(this.props.object.object.ngc);
+    };
 
-  render() {
-    const { object } = this.props;
-    const { object: { ngc, types, constellation } } = object;
-    const { from, to, max, sum, magnitude, surfaceBrightness } = display(object);
-    console.log(getObjectImgSrc(ngc))
-    return (
-      <TouchableNativeFeedback>
-        <View style={{ borderBottomColor: '#ddd', borderBottomWidth: 1, padding: 20 }}>
-          <View style={{ marginBottom: 10, flexDirection: 'row' }}>
-            <View style={{ marginRight: 10 }}>
-              <Image source={{ uri: getObjectImgSrc(ngc) }} style={{ width: 40, height: 40, borderRadius: 20 }} />
+    render() {
+      const { object } = this.props;
+      const { object: { ngc, types, constellation } } = object;
+      const { from, to, max, sum, magnitude, surfaceBrightness } = display(object);
+      return (
+        <TouchableNativeFeedback onPress={this.handlePress}>
+          <View style={{ borderBottomColor: '#ddd', borderBottomWidth: 1, padding: 20 }}>
+            <View style={{ marginBottom: 10, flexDirection: 'row' }}>
+              <View style={{ marginRight: 10 }}>
+                <Image source={{ uri: getObjectImgSrc(ngc) }} style={{ width: 40, height: 40, borderRadius: 20 }} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{getTitle(object)}</Text>
+                <Text>
+                  {resolveTypes(types).join(', ')} in {resolveConstellation(constellation)}
+                </Text>
+              </View>
             </View>
-            <View style={{ flex: 1 }}>
-              <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{this.getTitle()}</Text>
-              <Text>
-                {resolveTypes(types).join(', ')} in {resolveConstellation(constellation)}
-              </Text>
+            <View style={{ flexDirection: 'row', marginBottom: 5 }}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.propertyLabeL}>From</Text>
+                <Text style={styles.propertyValue}>{from}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.propertyLabeL}>Max / Alt</Text>
+                <Text style={styles.propertyValue}>{max}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.propertyLabeL}>To</Text>
+                <Text style={styles.propertyValue}>{to}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.propertyLabeL}>Sum</Text>
+                <Text style={styles.propertyValue}>{sum}</Text>
+              </View>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.propertyLabeL}>Magnitude</Text>
+                <Text style={styles.propertyValue}>{magnitude}</Text>
+              </View>
+              <View style={{ flex: 3 }}>
+                <Text style={styles.propertyLabeL}>Surface brightness</Text>
+                <Text style={styles.propertyValue}>{surfaceBrightness}</Text>
+              </View>
             </View>
           </View>
-          <View style={{ flexDirection: 'row', marginBottom: 5 }}>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.propertyLabeL}>From</Text>
-              <Text style={styles.propertyValue}>{from}</Text>
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.propertyLabeL}>Max / Alt</Text>
-              <Text style={styles.propertyValue}>{max}</Text>
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.propertyLabeL}>To</Text>
-              <Text style={styles.propertyValue}>{to}</Text>
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.propertyLabeL}>Sum</Text>
-              <Text style={styles.propertyValue}>{sum}</Text>
-            </View>
-          </View>
-          <View style={{ flexDirection: 'row' }}>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.propertyLabeL}>Magnitude</Text>
-              <Text style={styles.propertyValue}>{magnitude}</Text>
-            </View>
-            <View style={{ flex: 3 }}>
-              <Text style={styles.propertyLabeL}>Surface brightness</Text>
-              <Text style={styles.propertyValue}>{surfaceBrightness}</Text>
-            </View>
-          </View>
-        </View>
-      </TouchableNativeFeedback>
-    );
+        </TouchableNativeFeedback>
+      );
+    }
   }
-}
+);
 
 const FILTER_COLLAPSED_HEIGHT = 50;
 const FILTER_EXPANDED_HEIGHT = 180;

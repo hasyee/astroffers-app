@@ -56,3 +56,7 @@ export const filterObjects = () => (state: State) => async (dispatch, getState, 
 
 export const fetchLocation = () => (state: State) => async (dispatch, getState, { location }) =>
   location.fetchLocation();
+
+export const openDetails = (openedDetails: number) => (state: State): State => ({ ...state, openedDetails });
+
+export const closeDetails = () => (state: State): State => ({ ...state, openedDetails: null });
