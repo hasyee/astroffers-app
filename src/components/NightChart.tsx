@@ -79,6 +79,8 @@ const getConfig = (date: Timestamp, { night, moonlessNight, astroNight }: NightI
   },
 
   xAxis: {
+    lineWidth: 0,
+    lineColor: 'transparent',
     tickInterval: 6,
     min: 0,
     max: 24,
