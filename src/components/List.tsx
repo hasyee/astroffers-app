@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 const Item = connect(null, { openDetails })(
   class extends React.PureComponent<{ object: NgcInfo; openDetails: typeof openDetails }> {
     handlePress = () => {
-      this.props.openDetails(this.props.object.object.ngc);
+      setTimeout(() => this.props.openDetails(this.props.object.object.ngc));
     };
 
     render() {
