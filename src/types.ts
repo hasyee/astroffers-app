@@ -7,6 +7,7 @@ export type State = {
   result: Result;
   isFiltering: boolean;
   openedDetails: number;
+  isOpenAbout: boolean;
 };
 
 export type Filter = {

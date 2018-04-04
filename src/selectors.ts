@@ -27,6 +27,8 @@ export const getSortBy = ({ settings }: State): ListItemProp => settings.sortBy;
 
 export const isOpenDetails = ({ openedDetails }: State): boolean => !!openedDetails;
 
+export const isOpenAbout = ({ isOpenAbout }: State): boolean => isOpenAbout;
+
 export const getOpenedNgcInfo = ({ result, openedDetails }: State): NgcInfo =>
   result ? result.list.find(info => info.object.ngc === openedDetails) : null;
 

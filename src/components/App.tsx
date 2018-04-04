@@ -2,34 +2,39 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { View, DrawerLayoutAndroid, ToolbarAndroid, StatusBar, ToolbarAndroidAction } from 'react-native';
 import { NgcInfo } from 'astroffers-core';
-import { getOpenedNgcInfo, isOpenDetails } from '../selectors';
-import { closeDetails } from '../actions';
+import { getOpenedNgcInfo, isOpenDetails, isOpenAbout } from '../selectors';
+import { closeDetails, openAbout, closeAbout } from '../actions';
 import { getTitle } from '../utils/display';
 import Filter from './Filter';
 import Result from './Result';
 import Details from './Details';
 import About from './About';
 
-export default connect(state => ({ openedNgcInfo: getOpenedNgcInfo(state), isOpenDetails: isOpenDetails(state) }), {
-  closeDetails
-})(
-  class extends React.PureComponent<
-    {
-      openedNgcInfo: NgcInfo;
-      isOpenDetails: boolean;
-      closeDetails: typeof closeDetails;
-    },
-    { isOpenAbout: boolean }
-  > {
+export default connect(
+  state => ({
+    openedNgcInfo: getOpenedNgcInfo(state),
+    isOpenDetails: isOpenDetails(state),
+    isOpenAbout: isOpenAbout(state)
+  }),
+  {
+    closeDetails,
+    openAbout,
+    closeAbout
+  }
+)(
+  class extends React.PureComponent<{
+    openedNgcInfo: NgcInfo;
+    isOpenDetails: boolean;
+    isOpenAbout: boolean;
+    closeDetails: typeof closeDetails;
+    openAbout: typeof openAbout;
+    closeAbout: typeof closeAbout;
+  }> {
     drawer: DrawerLayoutAndroid;
-
-    state = {
-      isOpenAbout: false
-    };
 
     handleNavIconClick = () => {
       if (this.props.isOpenDetails) return this.props.closeDetails();
-      if (this.state.isOpenAbout) return this.setState({ isOpenAbout: false });
+      if (this.props.isOpenAbout) return this.props.closeAbout();
       this.drawer.openDrawer();
     };
 
@@ -39,26 +44,26 @@ export default connect(state => ({ openedNgcInfo: getOpenedNgcInfo(state), isOpe
 
     handleActionSelect = position => {
       if (position === 0) {
-        this.setState({ isOpenAbout: true });
+        this.props.openAbout();
       }
     };
 
     getNavIcon(): string {
-      return this.props.isOpenDetails || this.state.isOpenAbout ? 'ic_action_arrow_back' : 'ic_action_menu';
+      return this.props.isOpenDetails || this.props.isOpenAbout ? 'ic_action_arrow_back' : 'ic_action_menu';
     }
 
     getTitle(): string {
       if (this.props.isOpenDetails) return getTitle(this.props.openedNgcInfo);
-      if (this.state.isOpenAbout) return 'About';
+      if (this.props.isOpenAbout) return 'About';
       return 'Astroffers';
     }
 
     getActions(): ToolbarAndroidAction[] {
-      return this.props.isOpenDetails || this.state.isOpenAbout ? [] : [ { title: 'About', show: 'never' } ];
+      return this.props.isOpenDetails || this.props.isOpenAbout ? [] : [ { title: 'About', show: 'never' } ];
     }
 
     getDrawerLockMode() {
-      return this.props.isOpenDetails || this.state.isOpenAbout ? 'locked-closed' : 'unlocked';
+      return this.props.isOpenDetails || this.props.isOpenAbout ? 'locked-closed' : 'unlocked';
     }
 
     renderDrawer = () => {
@@ -66,8 +71,7 @@ export default connect(state => ({ openedNgcInfo: getOpenedNgcInfo(state), isOpe
     };
 
     render() {
-      const { openedNgcInfo, isOpenDetails } = this.props;
-      const { isOpenAbout } = this.state;
+      const { openedNgcInfo, isOpenDetails, isOpenAbout } = this.props;
       return (
         <DrawerLayoutAndroid
           drawerLockMode={this.getDrawerLockMode()}

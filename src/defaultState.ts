@@ -22,5 +22,6 @@ export default {
   },
   result: null,
   isFiltering: false,
-  openedDetails: null
+  openedDetails: null,
+  isOpenAbout: false
 } as State;

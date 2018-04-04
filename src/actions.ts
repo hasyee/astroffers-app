@@ -60,3 +60,7 @@ export const fetchLocation = () => (state: State) => async (dispatch, getState, 
 export const openDetails = (openedDetails: number) => (state: State): State => ({ ...state, openedDetails });
 
 export const closeDetails = () => (state: State): State => ({ ...state, openedDetails: null });
+
+export const openAbout = () => (state: State): State => ({ ...state, isOpenAbout: true });
+
+export const closeAbout = () => (state: State): State => ({ ...state, isOpenAbout: false });
