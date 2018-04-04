@@ -8,7 +8,9 @@ import Moon from './Moon';
 import NightChart from './NightChart';
 import IconButton from './IconButton';
 
-const { width: windowWidth } = Dimensions.get('window');
+const { width: WIDTH } = Dimensions.get('window');
+
+console.log(WIDTH);
 
 const COLLAPSED_HEIGHT = 60;
 const EXPANDED_HEIGHT = 152;
@@ -57,24 +59,33 @@ export default connect(state => ({
         <View
           style={{
             flexDirection: 'row',
+            justifyContent: 'space-between',
             paddingVertical: 3,
             ...!last ? { borderBottomColor: '#DDD', borderBottomWidth: 1 } : {}
           }}
         >
-          <View style={{ flex: 3 }}>
-            <Text style={{ fontSize: 12 }}>{title}</Text>
-          </View>
-          <View style={{ flex: 2, alignItems: 'flex-end', flexDirection: 'row', justifyContent: 'flex-end' }}>
-            <Text style={{ fontSize: 12, marginRight: 5 }}>{startTitle}</Text>
-            <Text style={{ fontSize: 12, width: 40, textAlign: 'center' }}>
-              {night && Number.isFinite(night.start) ? moment(night.start).format('HH:mm') : '-'}
+          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+            <Text numberOfLines={1} style={{ fontSize: 12, paddingRight: 5 }}>
+              {title}
             </Text>
           </View>
-          <View style={{ flex: 2, alignItems: 'flex-end', flexDirection: 'row', justifyContent: 'flex-end' }}>
-            <Text style={{ fontSize: 12, marginRight: 5 }}>{endTitle}</Text>
-            <Text style={{ fontSize: 12, width: 40, textAlign: 'center' }}>
-              {night && Number.isFinite(night.end) ? moment(night.end).format('HH:mm') : '-'}
-            </Text>
+          <View style={{ flex: 2, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
+            <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end' }}>
+              <Text numberOfLines={1} style={{ fontSize: 12, flex: 1, paddingRight: 5, textAlign: 'right' }}>
+                {startTitle}
+              </Text>
+              <Text numberOfLines={1} style={{ fontSize: 12, width: 40, textAlign: 'center' }}>
+                {night && Number.isFinite(night.start) ? moment(night.start).format('HH:mm') : '-'}
+              </Text>
+            </View>
+            <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end' }}>
+              <Text numberOfLines={1} style={{ fontSize: 12, flex: 1, paddingRight: 5, textAlign: 'right' }}>
+                {endTitle}
+              </Text>
+              <Text numberOfLines={1} style={{ fontSize: 12, width: 40, textAlign: 'center' }}>
+                {night && Number.isFinite(night.end) ? moment(night.end).format('HH:mm') : '-'}
+              </Text>
+            </View>
           </View>
         </View>
       );
@@ -91,24 +102,24 @@ export default connect(state => ({
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-              justifyContent: 'center',
+              justifyContent: 'space-between',
               paddingLeft: 20,
               paddingRight: 5,
               paddingTop: 5
             }}
           >
-            <View style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center' }}>
+            <View style={{ alignItems: 'flex-start', justifyContent: 'center' }}>
               <Text style={{ fontSize: 23 }}>{count}</Text>
               <Text style={{ fontSize: 10 }}>total results</Text>
             </View>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-              <View style={{ alignItems: 'flex-start', justifyContent: 'center' }}>
-                <Text style={{ fontSize: 12 }}>Moon</Text>
-                <Text style={{ fontSize: 12 }}>phase</Text>
+            <View style={{ alignItems: 'center', justifyContent: 'flex-end', flexDirection: 'row' }}>
+              <View style={{ marginRight: 10, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+                <View style={{ alignItems: 'flex-start', justifyContent: 'center' }}>
+                  <Text style={{ fontSize: 12 }}>Moon</Text>
+                  <Text style={{ fontSize: 12 }}>phase</Text>
+                </View>
+                <Moon phase={moonPhase} />
               </View>
-              <Moon phase={moonPhase} />
-            </View>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-end', flexDirection: 'row' }}>
               <View style={{ alignItems: 'flex-start', justifyContent: 'center' }}>
                 <Text style={{ fontSize: 12 }}>{this.getNightStart()}</Text>
                 <Text style={{ fontSize: 12 }}>{this.getNightEnd()}</Text>

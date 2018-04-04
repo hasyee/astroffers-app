@@ -177,14 +177,9 @@ export default connect(
               justifyContent: 'space-between'
             }}
           >
-            <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 15 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 15, flex: 1 }}>
               <Text style={{ fontSize: 16, color: 'black' }}>Sort by</Text>
-              <Picker
-                mode="dropdown"
-                style={{ width: 200, height: 40 }}
-                selectedValue={sortBy}
-                onValueChange={this.handleSort}
-              >
+              <Picker mode="dropdown" style={{ flex: 1, height: 40 }} selectedValue={sortBy} onValueChange={this.handleSort}>
                 <Picker.Item label="NGC" value={ListItemProp.NGC} />
                 <Picker.Item label="Messier" value={ListItemProp.MESSIER} />
                 <Picker.Item label="Name" value={ListItemProp.NAME} />
