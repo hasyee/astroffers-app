@@ -8,7 +8,9 @@
     "android": "react-native run-android",
     "log": "react-native log-android",
     "dev-menu": "adb shell input keyevent 82",
-    "bundle-worker": "react-native bundle --dev false --assets-dest ./android/app/src/main/res/ --entry-file worker.js --platform android --bundle-output ./android/app/src/main/assets/threads/worker.bundle"
+    "bundle-worker": "react-native bundle --dev false --assets-dest ./android/app/src/main/res/ --entry-file worker.js --platform android --bundle-output ./android/app/src/main/assets/threads/worker.bundle",
+    "release": "npm run bundle-worker && ./android/gradlew assembleRelease",
+    "test-install": "npm run bundle-worker && react-native run-android --variant=release"
   },
   "repository": {
     "type": "git",
