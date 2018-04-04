@@ -47,7 +47,7 @@ export default connect(state => ({ openedNgcInfo: getOpenedNgcInfo(state) }), { 
               titleColor="white"
               style={{ height: 56, backgroundColor: '#01579b', alignSelf: 'stretch', elevation: 5 }}
               title={isOpenDetails ? 'NGC ' + openedNgcInfo.object.ngc : 'Astroffers'}
-              actions={isOpenDetails ? [] : [ { title: 'Help', show: 'never' }, { title: 'About', show: 'never' } ]}
+              actions={isOpenDetails ? [] : [ { title: 'About', show: 'never' } ]}
               onIconClicked={this.handleIconClick}
               onActionSelected={this.handleActionSelect}
             />

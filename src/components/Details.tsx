@@ -151,7 +151,7 @@ export default connect(
                 <Row label1="Best visibility" value1={max} label2="Altitude" value2={altitudeAtMax} />
                 <Row label1="Transit" value1={transit} label2="Altitude" value2={altitudeAtTransit} />
               </View>
-              <View style={{ height: 400 }}>
+              <View style={{ height: 440 }}>
                 {isAllowRenderCharts &&
                 initialIndex === index && (
                   <View style={{ marginBottom: 20 }}>

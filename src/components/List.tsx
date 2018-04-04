@@ -59,7 +59,7 @@ const Item = connect(null, { openDetails })(
               <View style={{ marginRight: 10 }}>
                 <Image source={{ uri: getObjectImgSrc(ngc) }} style={{ width: 40, height: 40, borderRadius: 20 }} />
               </View>
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1, justifyContent: 'center' }}>
                 <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{getTitle(object)}</Text>
                 <Text>
                   {resolveTypes(types).join(', ')} in {resolveConstellation(constellation)}
