@@ -93,7 +93,7 @@ export default connect(
       this.setState({ isAllowRenderCharts: false });
       this.timer = setTimeout(() => {
         this.setState({ isAllowRenderCharts: true });
-      }, 500);
+      }, 250);
     }
 
     renderItem = ({ item: ngcInfo, index }) => {
