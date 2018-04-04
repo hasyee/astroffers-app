@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import HighCharts from './HighCharts';
 import {
   NgcInfo,
@@ -58,6 +59,7 @@ const getConfig = (
   return {
     plotOptions: {
       series: {
+        animation: false,
         turboThreshold: 1500
       }
     },

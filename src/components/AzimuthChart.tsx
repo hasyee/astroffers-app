@@ -36,6 +36,7 @@ const getConfig = (horizontalCoords: CoordSeries<Az>) => {
   return {
     plotOptions: {
       series: {
+        animation: false,
         turboThreshold: 1500
       }
     },

@@ -70,13 +70,33 @@ export default connect(
     nightInfo: NightInfo;
     openDetails: typeof openDetails;
   }> {
+    timer;
+
+    state = {
+      isAllowRenderCharts: false
+    };
+
+    componentDidMount() {
+      this.initTimer();
+    }
+
     handleSwipe = e => {
       const contentOffset = e.nativeEvent.contentOffset;
       const index = Math.round(contentOffset.x / WIDTH);
+      if (index === this.props.initialIndex) return;
       this.props.openDetails(this.props.objects[index].object.ngc);
+      this.initTimer();
     };
 
-    renderItem = ({ item: ngcInfo }) => {
+    initTimer() {
+      if (this.timer) clearTimeout(this.timer);
+      this.setState({ isAllowRenderCharts: false });
+      this.timer = setTimeout(() => {
+        this.setState({ isAllowRenderCharts: true });
+      }, 500);
+    }
+
+    renderItem = ({ item: ngcInfo, index }) => {
       const {
         ngc,
         title,
@@ -101,7 +121,8 @@ export default connect(
         altitudeAtTransit
       } = displayToDetails(ngcInfo);
 
-      const { minAltitude, nightInfo, horizontalCoords } = this.props;
+      const { minAltitude, nightInfo, horizontalCoords, initialIndex } = this.props;
+      const { isAllowRenderCharts } = this.state;
 
       return (
         <View style={{ flex: 1, width: WIDTH }}>
@@ -130,16 +151,24 @@ export default connect(
                 <Row label1="Best visibility" value1={max} label2="Altitude" value2={altitudeAtMax} />
                 <Row label1="Transit" value1={transit} label2="Altitude" value2={altitudeAtTransit} />
               </View>
-              <View style={{ marginBottom: 20 }}>
-                <AltitudeChart
-                  minAltitude={minAltitude}
-                  ngcInfo={ngcInfo}
-                  horizontalCoords={horizontalCoords}
-                  nightInfo={nightInfo}
-                />
-              </View>
-              <View style={{ marginBottom: 20, alignItems: 'center' }}>
-                <AzimuthChart horizontalCoords={horizontalCoords} />
+              <View style={{ height: 400 }}>
+                {isAllowRenderCharts &&
+                initialIndex === index && (
+                  <View style={{ marginBottom: 20 }}>
+                    <AltitudeChart
+                      minAltitude={minAltitude}
+                      ngcInfo={ngcInfo}
+                      horizontalCoords={horizontalCoords}
+                      nightInfo={nightInfo}
+                    />
+                  </View>
+                )}
+                {isAllowRenderCharts &&
+                initialIndex === index && (
+                  <View style={{ marginBottom: 20, alignItems: 'center' }}>
+                    <AzimuthChart horizontalCoords={horizontalCoords} />
+                  </View>
+                )}
               </View>
             </View>
           </ScrollView>
@@ -159,9 +188,9 @@ export default connect(
           horizontal
           pagingEnabled
           data={objects}
-          windowSize={1}
-          maxToRenderPerBatch={5}
-          initialNumToRender={5}
+          windowSize={3}
+          maxToRenderPerBatch={1}
+          initialNumToRender={1}
           initialScrollIndex={initialIndex}
           getItemLayout={(data, index) => ({
             length: WIDTH,
