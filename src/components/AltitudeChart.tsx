@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import { Dimensions } from 'react-native';
 import HighCharts from './HighCharts';
 import {
   NgcInfo,
@@ -13,6 +13,8 @@ import {
   PI2,
   toNextDay
 } from 'astroffers-core';
+
+const { width: WIDTH } = Dimensions.get('window');
 
 export default class extends React.PureComponent<{
   minAltitude: number;
@@ -69,7 +71,8 @@ const getConfig = (
     },
 
     chart: {
-      height: 200
+      height: 200,
+      width: WIDTH - 20
     },
 
     title: {
