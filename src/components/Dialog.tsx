@@ -1,19 +1,26 @@
 import * as React from 'react';
-import { View, Modal } from 'react-native';
+import { View, Modal, Dimensions } from 'react-native';
 
-export default class extends React.PureComponent<{ margin?: number; show?: boolean; onClose?: () => void }> {
+const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
+
+export default class extends React.PureComponent<{ style?: any; show?: boolean; onClose?: () => void }> {
   static defaultProps = {
-    margin: 30,
+    style: {},
     show: false,
     onClose: () => {}
   };
 
   render() {
-    const { margin, show, onClose, children } = this.props;
+    const { style, show, onClose, children } = this.props;
     return (
       <Modal animationType="fade" transparent={true} visible={show} onRequestClose={onClose}>
         <View
-          style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', padding: margin }}
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'row'
+          }}
         >
           <View
             style={{
@@ -26,7 +33,9 @@ export default class extends React.PureComponent<{ margin?: number; show?: boole
               opacity: 0.6
             }}
           />
-          <View style={{ backgroundColor: 'white', elevation: 10, flex: 1, margin }}>{children}</View>
+          <View style={{ backgroundColor: 'white', elevation: 10, maxHeight: HEIGHT, maxWidth: WIDTH, ...style }}>
+            {children}
+          </View>
         </View>
       </Modal>
     );

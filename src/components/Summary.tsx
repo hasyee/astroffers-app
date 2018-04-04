@@ -8,10 +8,6 @@ import Moon from './Moon';
 import NightChart from './NightChart';
 import IconButton from './IconButton';
 
-const { width: WIDTH } = Dimensions.get('window');
-
-console.log(WIDTH);
-
 const COLLAPSED_HEIGHT = 60;
 const EXPANDED_HEIGHT = 152;
 const DURATION = 200;

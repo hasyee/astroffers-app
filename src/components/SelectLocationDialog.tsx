@@ -81,7 +81,7 @@ export default connect(null, { fetchLocation })(
       const { show, onClose, onSubmit } = this.props;
       const { mapType, latitude, longitude } = this.state;
       return (
-        <Dialog show={show} onClose={onClose} margin={10}>
+        <Dialog show={show} onClose={onClose} style={{ margin: 10, flex: 1 }}>
           <View style={{ padding: 10 }}>
             <Text style={{ fontSize: 20 }}>Select your location</Text>
           </View>
