@@ -7,6 +7,7 @@ import { closeDetails } from '../actions';
 import Filter from './Filter';
 import Result from './Result';
 import Details from './Details';
+import { getTitle } from '../utils/display';
 
 export default connect(state => ({ openedNgcInfo: getOpenedNgcInfo(state) }), { closeDetails })(
   class extends React.PureComponent<{ openedNgcInfo: NgcInfo; closeDetails: typeof closeDetails }> {
@@ -46,7 +47,7 @@ export default connect(state => ({ openedNgcInfo: getOpenedNgcInfo(state) }), { 
               overflowIcon={{ uri: 'ic_action_more_vert' }}
               titleColor="white"
               style={{ height: 56, backgroundColor: '#01579b', alignSelf: 'stretch', elevation: 5 }}
-              title={isOpenDetails ? 'NGC ' + openedNgcInfo.object.ngc : 'Astroffers'}
+              title={isOpenDetails ? getTitle(openedNgcInfo) : 'Astroffers'}
               actions={isOpenDetails ? [] : [ { title: 'About', show: 'never' } ]}
               onIconClicked={this.handleIconClick}
               onActionSelected={this.handleActionSelect}
