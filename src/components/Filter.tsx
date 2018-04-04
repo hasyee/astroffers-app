@@ -87,10 +87,6 @@ export default connect(state => ({ filter: getFilter(state) }), {
       this.props.filterObjects();
     };
 
-    componentDidMount() {
-      this.props.filterObjects();
-    }
-
     getFilterButtonDisabled() {
       const {
         filter: {

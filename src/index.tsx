@@ -3,7 +3,7 @@ import { BackHandler } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore } from './store';
 import App from './components/App';
-import { closeDetails, closeAbout } from './actions';
+import { closeDetails, closeAbout, filterObjects } from './actions';
 
 export default class extends React.PureComponent {
   state = {
@@ -12,7 +12,10 @@ export default class extends React.PureComponent {
 
   async componentDidMount() {
     const store = await createStore();
-    this.setState({ store });
+    this.setState({ store }, () => {
+      store.dispatch(filterObjects());
+    });
+
     BackHandler.addEventListener('hardwareBackPress', () => {
       const state = store.getState();
       if (state.openedDetails) {

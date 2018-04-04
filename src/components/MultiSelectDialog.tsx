@@ -5,8 +5,6 @@ import Dialog from './Dialog';
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 
-console.log(HEIGHT);
-
 class Item extends React.PureComponent<{
   value: string;
   label: string;
