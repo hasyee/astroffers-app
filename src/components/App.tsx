@@ -1,20 +1,36 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { View, DrawerLayoutAndroid, ToolbarAndroid, StatusBar } from 'react-native';
+import { View, DrawerLayoutAndroid, ToolbarAndroid, StatusBar, ToolbarAndroidAction } from 'react-native';
 import { NgcInfo } from 'astroffers-core';
-import { getOpenedNgcInfo } from '../selectors';
+import { getOpenedNgcInfo, isOpenDetails } from '../selectors';
 import { closeDetails } from '../actions';
+import { getTitle } from '../utils/display';
 import Filter from './Filter';
 import Result from './Result';
 import Details from './Details';
-import { getTitle } from '../utils/display';
+import About from './About';
 
-export default connect(state => ({ openedNgcInfo: getOpenedNgcInfo(state) }), { closeDetails })(
-  class extends React.PureComponent<{ openedNgcInfo: NgcInfo; closeDetails: typeof closeDetails }> {
+export default connect(state => ({ openedNgcInfo: getOpenedNgcInfo(state), isOpenDetails: isOpenDetails(state) }), {
+  closeDetails
+})(
+  class extends React.PureComponent<
+    {
+      openedNgcInfo: NgcInfo;
+      isOpenDetails: boolean;
+      closeDetails: typeof closeDetails;
+    },
+    { isOpenAbout: boolean }
+  > {
     drawer: DrawerLayoutAndroid;
 
-    handleIconClick = () => {
-      !this.props.openedNgcInfo ? this.drawer.openDrawer() : this.props.closeDetails();
+    state = {
+      isOpenAbout: false
+    };
+
+    handleNavIconClick = () => {
+      if (this.props.isOpenDetails) return this.props.closeDetails();
+      if (this.state.isOpenAbout) return this.setState({ isOpenAbout: false });
+      this.drawer.openDrawer();
     };
 
     handleCloseDrawer = () => {
@@ -22,19 +38,39 @@ export default connect(state => ({ openedNgcInfo: getOpenedNgcInfo(state) }), { 
     };
 
     handleActionSelect = position => {
-      console.log(position);
+      if (position === 0) {
+        this.setState({ isOpenAbout: true });
+      }
     };
+
+    getNavIcon(): string {
+      return this.props.isOpenDetails || this.state.isOpenAbout ? 'ic_action_arrow_back' : 'ic_action_menu';
+    }
+
+    getTitle(): string {
+      if (this.props.isOpenDetails) return getTitle(this.props.openedNgcInfo);
+      if (this.state.isOpenAbout) return 'About';
+      return 'Astroffers';
+    }
+
+    getActions(): ToolbarAndroidAction[] {
+      return this.props.isOpenDetails || this.state.isOpenAbout ? [] : [ { title: 'About', show: 'never' } ];
+    }
+
+    getDrawerLockMode() {
+      return this.props.isOpenDetails || this.state.isOpenAbout ? 'locked-closed' : 'unlocked';
+    }
 
     renderDrawer = () => {
       return <Filter onSubmit={this.handleCloseDrawer} />;
     };
 
     render() {
-      const { openedNgcInfo } = this.props;
-      const isOpenDetails = !!openedNgcInfo;
+      const { openedNgcInfo, isOpenDetails } = this.props;
+      const { isOpenAbout } = this.state;
       return (
         <DrawerLayoutAndroid
-          drawerLockMode={isOpenDetails ? 'locked-closed' : 'unlocked'}
+          drawerLockMode={this.getDrawerLockMode()}
           drawerWidth={300}
           drawerPosition={DrawerLayoutAndroid.positions.Left}
           renderNavigationView={this.renderDrawer}
@@ -43,18 +79,19 @@ export default connect(state => ({ openedNgcInfo: getOpenedNgcInfo(state) }), { 
           <StatusBar backgroundColor="#004376" barStyle="light-content" />
           <View style={{ flex: 1, marginTop: 0, backgroundColor: '#f8f8f8' }}>
             <ToolbarAndroid
-              navIcon={{ uri: isOpenDetails ? 'ic_action_arrow_back' : 'ic_action_menu' }}
+              navIcon={{ uri: this.getNavIcon() }}
               overflowIcon={{ uri: 'ic_action_more_vert' }}
               titleColor="white"
               style={{ height: 56, backgroundColor: '#01579b', alignSelf: 'stretch', elevation: 5 }}
-              title={isOpenDetails ? getTitle(openedNgcInfo) : 'Astroffers'}
-              actions={isOpenDetails ? [] : [ { title: 'About', show: 'never' } ]}
-              onIconClicked={this.handleIconClick}
+              title={this.getTitle()}
+              actions={this.getActions()}
+              onIconClicked={this.handleNavIconClick}
               onActionSelected={this.handleActionSelect}
             />
             <View style={{ flex: 1 }}>
               <Result />
               {isOpenDetails && <Details />}
+              {isOpenAbout && <About />}
             </View>
           </View>
         </DrawerLayoutAndroid>
