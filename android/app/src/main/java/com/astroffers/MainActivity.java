@@ -1,4 +1,4 @@
-package com.astroffers;
+package org.astroffers;
 
 import com.facebook.react.ReactActivity;
 

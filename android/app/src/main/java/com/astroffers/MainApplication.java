@@ -1,4 +1,4 @@
-package com.astroffers;
+package org.astroffers;
 
 import android.app.Application;
 
