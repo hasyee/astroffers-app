@@ -50,11 +50,7 @@ export default connect(null, { fetchLocation })(
       this.setState(evt.nativeEvent.coordinate, this.navigateMapToPosition);
     };
     handleUseMyLocation = () =>
-      this.props
-        .fetchLocation()
-        .then(location =>
-          navigator.geolocation.getCurrentPosition(position => this.setState(location, this.navigateMapToPosition))
-        );
+      this.props.fetchLocation().then(location => this.setState(location, this.navigateMapToPosition)).catch(err => {});
 
     handleCancel = () => {
       this.setState(this.getInitialState(this.props));
