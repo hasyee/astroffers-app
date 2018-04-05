@@ -265,7 +265,7 @@ export default connect(state => ({ filter: getFilter(state) }), {
             </View>
           </ScrollView>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 20 }}>
-            <Button title="RESET" onPress={resetFilter} />
+            <Button title="RESET" color="#01579b" onPress={resetFilter} />
             <Button
               title="FILTER"
               color="#01579b"
