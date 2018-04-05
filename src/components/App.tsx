@@ -4,7 +4,6 @@ import { View, DrawerLayoutAndroid, ToolbarAndroid, StatusBar, ToolbarAndroidAct
 import { NgcInfo } from 'astroffers-core';
 import { getOpenedNgcInfo, isOpenDetails, isOpenAbout } from '../selectors';
 import { closeDetails, openAbout, closeAbout } from '../actions';
-import { getTitle } from '../utils/display';
 import Filter from './Filter';
 import Result from './Result';
 import Details from './Details';
@@ -53,9 +52,9 @@ export default connect(
     }
 
     getTitle(): string {
-      if (this.props.isOpenDetails) return getTitle(this.props.openedNgcInfo);
+      if (this.props.isOpenDetails) return 'NGC ' + this.props.openedNgcInfo.object.ngc;
       if (this.props.isOpenAbout) return 'About';
-      return 'Astroffers';
+      return 'Astroffers    '; // hax of the content inset bug
     }
 
     getActions(): ToolbarAndroidAction[] {
