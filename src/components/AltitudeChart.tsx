@@ -72,7 +72,7 @@ const getConfig = (
 
     chart: {
       height: 200,
-      width: WIDTH - 20
+      width: WIDTH
     },
 
     title: {
