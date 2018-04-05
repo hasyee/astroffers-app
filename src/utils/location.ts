@@ -7,9 +7,7 @@ export const fetchLocation = (): Promise<{ latitude; longitude }> =>
         resolve({ latitude: position.coords.latitude, longitude: position.coords.longitude });
       },
       err => {
-        console.error(err);
         ToastAndroid.showWithGravity('Failed to fetch location', ToastAndroid.SHORT, ToastAndroid.CENTER);
-        reject(new Error('Failed to fetch location'));
       }
     )
   );

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BackHandler } from 'react-native';
+import { BackHandler, PermissionsAndroid } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore } from './store';
 import App from './components/App';
@@ -11,6 +11,7 @@ export default class extends React.PureComponent {
   };
 
   async componentDidMount() {
+    await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
     const store = await createStore();
     this.setState({ store }, () => {
       store.dispatch(filterObjects());
