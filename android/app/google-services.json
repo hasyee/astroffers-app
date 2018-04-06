@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "31199203146",
+    "firebase_url": "https://astroffers-1510247246806.firebaseio.com",
+    "project_id": "astroffers-1510247246806",
+    "storage_bucket": "astroffers-1510247246806.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31199203146:android:1050dfd69b8da763",
+        "android_client_info": {
+          "package_name": "org.astroffers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31199203146-5bjjc55hvlco0rflgk4uavfksgmpbgmr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.astroffers",
+            "certificate_hash": "0fa5464bcdf66d08a20afd2fa7b16c99243575aa"
+          }
+        },
+        {
+          "client_id": "31199203146-f8erfsubj2ndk5d3ujt8mnd6dv0bve3o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQRaN58hDHRigohdKou4ra6JUYStRgTsE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "31199203146-f8erfsubj2ndk5d3ujt8mnd6dv0bve3o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
