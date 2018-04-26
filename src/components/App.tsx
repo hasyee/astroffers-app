@@ -79,7 +79,6 @@ export default connect(
           renderNavigationView={this.renderDrawer}
           ref={drawer => (this.drawer = drawer)}
         >
-          <StatusBar backgroundColor="#004376" barStyle="light-content" />
           <View style={{ flex: 1, marginTop: 0, backgroundColor: '#f8f8f8' }}>
             <ToolbarAndroid
               navIcon={{ uri: this.getNavIcon() }}
