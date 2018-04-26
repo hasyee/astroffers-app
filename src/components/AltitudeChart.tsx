@@ -115,22 +115,22 @@ const getConfig = (
               to: night.end,
               color: '#01579B'
             }
-          : {},
+          : null,
         astroNight
           ? {
               from: astroNight.start,
               to: astroNight.end,
               color: 'grey'
             }
-          : {},
+          : null,
         moonlessNight
           ? {
               from: moonlessNight.start,
               to: moonlessNight.end,
               color: 'black'
             }
-          : {}
-      ],
+          : null
+      ].filter(_ => _),
 
       plotLines: [
         [
